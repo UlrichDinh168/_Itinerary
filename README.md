@@ -8,14 +8,12 @@ Demo site: https://itinerary-planning.netlify.app/
 # Project overview
 
 - Frontend: React, Redux
-- Deployment: Netlify.
+- Backend: Node.js (Express)
+- Deployment: Netlify. AWS (Nginx)
 
 # Scripts
 
 - `npm install` or `yarn` to install the required dependencies
 - `npm start` or `yarn start` to start the development server on http://localhost:3000
+- It is also recommended to `cd` into `server` & `client` to install both dependencies.
 
-# TODO:
-
-- Add boundary to Uusimaa Area.
-- Transition.
