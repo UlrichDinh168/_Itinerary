@@ -1,0 +1,63 @@
+/** @format */
+
+@import "./mainlayout.scss";
+@import "./itinerary.scss";
+@import "./input.scss";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:500&display=swap");
+
+// Settings
+:root {
+  --red: #f14c00;
+  --red-dim: #c73f09;
+  --blue: #007ac9;
+  --purple: #ad37c3;
+  --green: #10de2b;
+  --green-dim: #008151;
+  --light-gray: #dddddd;
+  --white: #fff;
+  --primary-color: #f2f7fb;
+  --key-corner: #e9f2fb;
+  --shadow-color: #d9e3ec;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  // min-width: 900px;
+  background: var(--primary-color);
+
+  font-family: "Ubuntu", sans-serif;
+
+  -webkit-appearance: none;
+  input[type="text" i] {
+    padding: 0.5rem 3rem;
+    width: 100% !important;
+  }
+}
+//Material-ui override
+.MuiOutlinedInput-input
+  .MuiInputBase-input
+  .MuiInputBase-inputSizeSmall
+  .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input,
+.css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root,
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root {
+  font-family: "Ubuntu", sans-serif !important;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.leaflet-container {
+  height: 360px;
+  max-height: 100%;
+  width: 360px;
+  max-width: 100%;
+}

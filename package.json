@@ -1,0 +1,35 @@
+{
+  "name": "timetable",
+  "version": "1.0.0",
+  "description": "<!-- @format -->",
+  "main": "index.js",
+  "engines": {
+    "node": ">=12",
+    "npm": ">=6",
+    "yarn": ">=1"
+  },
+  "scripts": {
+    "start": "npm run client-build && npm start --prefix server",
+    "server": "npm start --prefix server",
+    "client": "npm start --prefix client",
+    "client-install": "cd client && yarn ",
+    "server-install": "cd server && yarn",
+    "client-build": "npm run build --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "postinstall": "concurrently \"yarn run client-install\" \"yarn run server-install\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix server && npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UlrichDinh168/timetable.git"
+  },
+  "author": "Ulrich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UlrichDinh168/timetable/issues"
+  },
+  "homepage": "https://github.com/UlrichDinh168/timetable#readme",
+  "dependencies": {
+    "concurrently": "^6.3.0"
+  }
+}
