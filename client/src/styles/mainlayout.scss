@@ -136,7 +136,20 @@
   }
 }
 
+<<<<<<< HEAD
 @media (max-width: 650px) {
+=======
+@media screen and (max-width: 600px) {
+  .searchArea__form--container {
+    width: 100%;
+  }
+  .main__content .input__wrapper--clear {
+    right: 3rem;
+  }
+}
+
+@media screen and (max-width: 992px) {
+>>>>>>> 1a3f819 (re-commit)
   .main__layout {
     margin: 0;
   }
@@ -153,6 +166,6 @@
   .searchArea__form--container {
     display: flex;
     flex-direction: column;
-    width: 60% !important;
+    width: 60%;
   }
 }

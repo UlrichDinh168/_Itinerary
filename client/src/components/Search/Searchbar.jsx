@@ -30,11 +30,11 @@ const Searchbar = ({ isOrigin }) => {
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  useOnClickOutside(wrapperRef, () => {
-    if (isFocus) {
-      setFocus(false);
-    }
-  });
+  // useOnClickOutside(wrapperRef, () => {
+  //   if (isFocus) {
+  //     setFocus(false);
+  //   }
+  // });
 
   const handleChange = (e) => {
     const { value } = e.target;

@@ -12,11 +12,11 @@
     "start": "npm run client-build && npm start --prefix server",
     "server": "npm start --prefix server",
     "client": "npm start --prefix client",
-    "client-install": "cd client && yarn ",
-    "server-install": "cd server && yarn",
+    "client-install": "cd client && npm install ",
+    "server-install": "cd server && npm install",
     "client-build": "npm run build --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "postinstall": "concurrently \"yarn run client-install\" \"yarn run server-install\"",
+    "postinstall": "concurrently \"npm run client-install\" \"npm run server-install\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix server && npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
