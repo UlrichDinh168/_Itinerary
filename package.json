@@ -11,6 +11,7 @@
   "scripts": {
     "start": "npm run client-build && npm start --prefix server",
     "server": "npm start --prefix server",
+    "build": "npm run client-build",
     "client": "npm start --prefix client",
     "client-install": "cd client && npm install ",
     "server-install": "cd server && npm install",
