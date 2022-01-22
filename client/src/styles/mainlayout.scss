@@ -136,20 +136,16 @@
   }
 }
 
-<<<<<<< HEAD
-@media (max-width: 650px) {
-=======
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 480px) {
   .searchArea__form--container {
     width: 100%;
   }
   .main__content .input__wrapper--clear {
-    right: 3rem;
+    // right: 3rem;
   }
 }
 
-@media screen and (max-width: 992px) {
->>>>>>> 1a3f819 (re-commit)
+@media screen and (max-width: 768px) {
   .main__layout {
     margin: 0;
   }

@@ -10,13 +10,8 @@ import { createLogger } from "redux-logger";
 import storage from "redux-persist/lib/storage";
 import axios from "axios";
 
-<<<<<<< HEAD
-// const baseURL = BACKEND_BASE_URL || "http://localhost:5000";
-const baseURL = "http://localhost:5000";
-=======
 // const baseURL = BACKEND_BASE_URL || "http://localhost:5001";
 const baseURL = "http://localhost:5001";
->>>>>>> 1a3f819 (re-commit)
 // Config redux-persist
 const persistConfig = {
   key: PERSIST_KEY,
