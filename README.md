@@ -12,7 +12,7 @@ Demo site: https://itinerary-planning.netlify.app/
 
 - Frontend: React, Redux
 - Backend: Node.js (Express)
-- Deployment: Netlify. AWS (Nginx)
+- Deployment: Netlify.
 
 # Scripts
 
