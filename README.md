@@ -9,7 +9,6 @@ A simple website that allows users to search for itineraries and public transpor
 
 - Frontend: React, Redux
 - Backend: Node.js (Express)
-- Deployment: Netlify.
 
 # Scripts
 
