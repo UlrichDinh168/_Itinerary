@@ -14,8 +14,6 @@ const PORT = process.env.PORT || 5001;
 const app = express();
 
 app.use(morgan("dev"));
-// var jsonParser = bodyParser.json()
-
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.urlencoded({ extended: true }));

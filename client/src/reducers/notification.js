@@ -12,7 +12,6 @@ export const notificationReducer = (state = initialState, action) => {
       ...state,
       notification: {
         type: NOTIFICATION_TYPE.error,
-        // message: "res",
         message: action?.error?.response?.data?.message,
         duration: NOTIFICATION_DURATION,
       },

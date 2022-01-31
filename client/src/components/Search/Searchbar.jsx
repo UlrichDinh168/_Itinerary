@@ -30,12 +30,6 @@ const Searchbar = ({ isOrigin }) => {
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  // useOnClickOutside(wrapperRef, () => {
-  //   if (isFocus) {
-  //     setFocus(false);
-  //   }
-  // });
-
   const handleChange = (e) => {
     const { value } = e.target;
     setInput(value);
@@ -48,11 +42,6 @@ const Searchbar = ({ isOrigin }) => {
       setSearchResults(addressSearch);
     }
   }, [addressSearch]);
-
-  // useEffect(() => {
-  //   if (addressSearch?.length) {
-  //   }
-  // }, [addressSearch]);
 
   useEffect(() => {
     if (input?.length === 0) return setSearchResults([]);
@@ -174,7 +163,6 @@ const Searchbar = ({ isOrigin }) => {
         searchResultActions.getAddressLookup(latitude, longitude),
       );
       const { labelNameArray, coordinates } = res.payload?.data?.data[0];
-      // setFocus(true);
       setInput(labelNameArray[0]);
       setAddress({
         name: labelNameArray[0],
