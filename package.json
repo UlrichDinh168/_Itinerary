@@ -10,14 +10,14 @@
   },
   "scripts": {
     "start": "npm run client-build && npm start --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "npm start --prefix client",
     "server": "npm start --prefix server",
     "build": "npm run client-build",
-    "client": "npm start --prefix client",
+    "client-build": "npm run build --prefix client",
     "client-install": "cd client && npm install ",
     "server-install": "cd server && npm install",
-    "client-build": "npm run build --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "postinstall": "concurrently \"npm run client-install\" \"npm run server-install\"",
+    "postinstall": "npm run client-install && npm run server-install",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix server && npm install --prefix client && npm run build --prefix client"
   },
   "repository": {
