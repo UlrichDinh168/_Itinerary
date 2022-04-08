@@ -15,12 +15,13 @@ import { NOTIFICATION_TYPE } from "../../constants";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 export const SearchArea = () => {
+
   const dispatch = useDispatch();
   const itinerary = useSelector((state) => state.itinerary);
-  const defaultDateTime = moment(Date.now()).toLocaleString();
+  const defaultDateTime = moment().toLocaleString();
 
-  const currentDate = moment(Date.now()).format("YYYY-MM-DD");
-  const currentTime = moment(Date.now()).format("HH:mm:ss");
+  const currentDate = moment().format("YYYYMMDD");
+  const currentTime = moment().format("HH:mm:ss");
 
   const { dateTime, destination, origin } = itinerary;
 
@@ -41,7 +42,7 @@ export const SearchArea = () => {
   };
 
   const handleSearch = async (origin, destination, dateTime) => {
-    const date = moment(dateTime).format("YYYY-MM-DD");
+    const date = moment(dateTime).format("YYYYMMDD");
     const time = moment(dateTime).format("HH:mm:ss");
     const returnData = {
       origin: {

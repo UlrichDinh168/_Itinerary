@@ -1,5 +1,3 @@
-/** @format */
-
 import express from "express";
 import morgan from "morgan";
 import { apiRoutes } from "./routes/apiRoutes.js";
@@ -10,10 +8,10 @@ import { fileURLToPath } from "url";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5001;
 const app = express();
 
-app.use(morgan("dev"));
+// app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
@@ -32,11 +30,8 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.get("/", (req, res) => res.send("Hello World"));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/../client/build/index.html"));
-});
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
@@ -53,15 +48,9 @@ app.use((error, req, res, next) => {
   });
 });
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "../client", "build")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-  });
-}
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

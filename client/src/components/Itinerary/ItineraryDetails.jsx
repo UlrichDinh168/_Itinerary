@@ -11,7 +11,7 @@ const ItineraryDetails = ({ leg, isOrigin, isDestination }) => {
   const renderTime = (startTime, endTime, duration) => {
     return (
       <div className='timeBox__container'>
-        {moment(startTime).format("HH:mm")} -{moment(endTime).format("HH:mm")}{" "}
+        {moment(startTime).format("HH:mm")} - {moment(endTime).format("HH:mm")}
         <span>({convertMinToHour(duration)})</span>
       </div>
     );
