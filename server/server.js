@@ -1,5 +1,4 @@
 import express from "express";
-import morgan from "morgan";
 import { apiRoutes } from "./routes/apiRoutes.js";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -11,12 +10,24 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
 
-// app.use(morgan("dev"));
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", apiRoutes);
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
+// });
+const root = path.join(__dirname, "../client", "build");
+app.use(express.static(root));
+app.get("*", (req, res) => {
+  res.sendFile("index.html", { root });
+});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
+// });
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -31,8 +42,6 @@ app.use((req, res, next) => {
   next();
 });
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 app.use((req, res, next) => {
   const error = new Error("Not found");
   error.status = 404;
@@ -46,10 +55,6 @@ app.use((error, req, res, next) => {
       message: error.message,
     },
   });
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
 });
 
 app.listen(PORT, () => {

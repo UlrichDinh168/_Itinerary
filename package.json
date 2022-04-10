@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/UlrichDinh168/timetable/issues"
   },
-  "homepage": "https://github.com/UlrichDinh168/timetable#readme",
+  "homepage": "",
   "dependencies": {
     "concurrently": "^6.3.0"
   }

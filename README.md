@@ -12,5 +12,5 @@ A simple website that allows users to search for itineraries and public transpor
 # Scripts
 
 - `npm install` or `yarn` to install the required dependencies.
-- `npm start` or `yarn start` to start the development server on http://localhost:5000 and serve the client build file.
+- `npm start` or `yarn start` to start the development server on http://localhost:8000 and serve the client build file.
 - `npm run dev` to run the development server and client silmultaneously.
