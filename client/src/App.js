@@ -9,6 +9,12 @@ import Snackbar from "./shared/SnackBar";
 const App = () => {
   return (
     <Provider store={store}>
+      <Helmet titleTemplate="Itinerary" defaultTitle="Itinerary">
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
+      </Helmet>
       <Container />
       <Snackbar />
     </Provider>
