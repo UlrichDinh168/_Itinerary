@@ -22,7 +22,7 @@ const SearchResults = ({
             onMouseDown={() => selectResult(result)}
             key={result.id}>
             <span className='address__main'>{main}</span>
-            <span className='address__secondary'>{secondary}</span>
+            <span className='address__secondary'>{secondary[0]} {secondary[1]}</span>
           </li>
         );
       });
