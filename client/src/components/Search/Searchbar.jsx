@@ -2,8 +2,8 @@
 
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { hasInvalidValue, simplifyResJson } from "../../utils";
-import useOnClickOutside from "../../hooks/useOnClickOutside";
+import { hasInvalidValue } from "../../utils";
+// import useOnClickOutside from "../../hooks/useOnClickOutside";
 import SearchResults from "./SearchResults";
 import Input from "../../shared/Input";
 import {

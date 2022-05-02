@@ -44,7 +44,7 @@
     "not dead",
     "not op_mini all"
   ],
-  "proxy": "http://localhost:5000",
+  "proxy": "http://localhost:8000",
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
     "@babel/plugin-syntax-optional-chaining": "^7.8.3",
