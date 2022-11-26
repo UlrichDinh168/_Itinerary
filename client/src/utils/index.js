@@ -1,5 +1,3 @@
-/** @format */
-
 import { MODE } from "../constants";
 
 export const simplifyResJson = (json) => {
