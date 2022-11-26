@@ -18,17 +18,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", apiRoutes);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../client", "build", "index.html"));
-// });
+
+
+
 const root = path.join(__dirname, "../client", "build");
 app.use(express.static(root));
 app.get("*", (req, res) => {
   res.sendFile("index.html", { root });
 });
-// app.get("/", (req, res) => {
-//   res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
-// });
+
+
+// Serve static assets in production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static(root));
+  app.get("*", (req, res) => {
+    res.sendFile("index.html", { root });
+  });
+}
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
