@@ -1,6 +1,6 @@
 /** @format */
 
-export const normalizeData = (json) => {
+exports.normalizeData = (json) => {
   return json.map((item) => {
     const id = item?.properties?.id;
     const labelNameArray = item?.properties?.label.split(", ");
@@ -16,7 +16,7 @@ export const normalizeData = (json) => {
   });
 };
 
-export const createQuery = (value) =>
+exports.createQuery = (value) =>
   `
     {
       plan(

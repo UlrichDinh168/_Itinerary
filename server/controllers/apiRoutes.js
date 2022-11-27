@@ -1,10 +1,8 @@
-/** @format */
+const { normalizeData, createQuery } = require("../utils/index.js");
+const fetch = require("node-fetch");
+const { request, gql } = require("graphql-request");
 
-import { normalizeData, createQuery } from "../utils/index.js";
-import fetch from "node-fetch";
-import { request, gql } from "graphql-request";
-
-export const getAddressSearch = async (req, res) => {
+exports.getAddressSearch = async (req, res) => {
   try {
     if (req.body.text.length > 2) {
       const defaultData = await fetch(
@@ -34,7 +32,7 @@ export const getAddressSearch = async (req, res) => {
   }
 };
 
-export const getAddressLookup = async (req, res) => {
+exports.getAddressLookup = async (req, res) => {
   try {
     const data = await fetch(
       `https://api.digitransit.fi/geocoding/v1/reverse?point.lat=${req.body.lat}&point.lon=${req.body.lon}&lang=en&size=1&layers=address`,
@@ -52,7 +50,7 @@ export const getAddressLookup = async (req, res) => {
   }
 };
 
-export const getItineraryPlan = async (req, res) => {
+exports.getItineraryPlan = async (req, res) => {
   try {
     const query = gql`
       ${createQuery(req.body)}

@@ -1,16 +1,16 @@
 /** @format */
 
-import express from "express";
+const express = require("express");
 const router = express.Router();
 
-import {
+const {
   getAddressLookup,
   getAddressSearch,
   getItineraryPlan,
-} from "../controllers/apiRoutes.js";
+} = require("../controllers/apiRoutes.js");
 
 router.post("/get-address-lookup", getAddressLookup);
 router.post("/get-address-search", getAddressSearch);
 router.post("/get-itinerary-plan", getItineraryPlan);
 
-export const apiRoutes = router;
+exports.apiRoutes = router;
