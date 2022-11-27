@@ -12,7 +12,7 @@ import axios from "axios";
 
 // const baseURL = BACKEND_BASE_URL || "http://localhost:8000";
 // const baseURL = "http://ec2-18-194-249-0.eu-central-1.compute.amazonaws.com:8000";
-const baseURL = "http://localhost:8000";
+const baseURL = "https://ulrich-itinerary.herokuapp.com";
 
 // Config redux-persist
 const persistConfig = {
