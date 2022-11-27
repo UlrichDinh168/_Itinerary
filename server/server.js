@@ -1,9 +1,9 @@
-import express from "express";
-import { apiRoutes } from "./routes/apiRoutes.js";
-import cors from "cors";
-import dotenv from "dotenv";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
+const express = require("express");
+const { apiRoutes } = require("./routes/apiRoutes.js");
+const cors = require("cors");
+const dotenv = require("dotenv");
+const path = require("path");
+const { fileURLToPath } = require("url");
 
 dotenv.config();
 
@@ -17,8 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", apiRoutes);
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
+// const __dirname = dirname(fileURLToPath(import.meta.url));
 
 
 const root = path.join(__dirname, "../client", "build");
