@@ -1,19 +1,19 @@
 /** @format */
 
 import { createStore, applyMiddleware, compose } from "redux";
+
 import thunk from "redux-thunk";
 import { rootReducer } from "./reducers";
-import { PERSIST_KEY, BACKEND_BASE_URL } from "./constants";
+import { PERSIST_KEY } from "./constants.js";
 import { multiClientMiddleware } from "redux-axios-middleware";
 import { persistStore, persistReducer } from "redux-persist";
 import { createLogger } from "redux-logger";
 import storage from "redux-persist/lib/storage";
 import axios from "axios";
 
-// const baseURL = BACKEND_BASE_URL || "http://localhost:8000";
 // const baseURL = "http://ec2-18-194-249-0.eu-central-1.compute.amazonaws.com:8000";
 const baseURL = "https://ulrich-itinerary.herokuapp.com";
-
+// const baseURL = 'localhost:8000'
 // Config redux-persist
 const persistConfig = {
   key: PERSIST_KEY,

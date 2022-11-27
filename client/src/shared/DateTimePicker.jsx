@@ -26,7 +26,7 @@ export default function MaterialUIPickers({ value, onChange }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack spacing={3}>
         <DateTimePicker
-          label="Date&Time picker"
+          label="Date Time picker"
           value={value}
           onChange={onChange}
           disablePast

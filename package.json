@@ -2,7 +2,6 @@
   "name": "timetable",
   "version": "1.0.0",
   "description": "<!-- @format -->",
-  "main": "index.js",
   "engines": {
     "node": ">=12",
     "npm": ">=6",

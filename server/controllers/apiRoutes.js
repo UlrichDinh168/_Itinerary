@@ -1,17 +1,25 @@
 const { normalizeData, createQuery } = require("../utils/index.js");
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
+const axios = require('axios')
 const { request, gql } = require("graphql-request");
+const { BACKEND_BASE_URL } = require("../../client/src/constants.js");
+
+const instance = axios.create({
+  baseURL: BACKEND_BASE_URL,
+});
+
 
 exports.getAddressSearch = async (req, res) => {
+  const text = req?.body
   try {
-    if (req.body.text.length > 2) {
-      const defaultData = await fetch(
-        `https://api.digitransit.fi/geocoding/v1/search?text=${req.body.text}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
+    if (text.length > 2) {
+      const defaultData = await instance.get(
+        `/geocoding/v1/search?text=${text}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
       );
       const defaultDataJson = await defaultData.json();
 
-      const transportData = await fetch(
-        `https://api.digitransit.fi/geocoding/v1/search?text=${req.body.text}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
+      const transportData = await instance.get(
+        `/geocoding/v1/search?text=${text}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
       );
       const transportDataJson = await transportData.json();
 
@@ -33,9 +41,10 @@ exports.getAddressSearch = async (req, res) => {
 };
 
 exports.getAddressLookup = async (req, res) => {
+  const { lat, lon } = req?.body
   try {
-    const data = await fetch(
-      `https://api.digitransit.fi/geocoding/v1/reverse?point.lat=${req.body.lat}&point.lon=${req.body.lon}&lang=en&size=1&layers=address`,
+    const data = await await instance.get(
+      `/geocoding/v1/reverse?point.lat=${lat}&point.lon=${lon}&lang=en&size=1&layers=address`,
     );
     const json = await data.json();
     if (json?.features?.length === 0)
@@ -57,7 +66,7 @@ exports.getItineraryPlan = async (req, res) => {
     `;
 
     const responseData = await request(
-      "https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql",
+      "/routing/v1/routers/hsl/index/graphql",
       query,
     );
 
