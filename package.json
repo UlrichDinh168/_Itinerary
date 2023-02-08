@@ -29,6 +29,11 @@
   },
   "homepage": "",
   "dependencies": {
-    "concurrently": "^6.3.0"
+    "concurrently": "^7.6.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
+    "typescript": "^4.9.5"
   }
 }

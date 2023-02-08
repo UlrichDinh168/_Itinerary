@@ -1,4 +1,3 @@
-/** @format */
 
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,11 +28,11 @@ export const SearchArea = () => {
     handleSearch(origin, destination, dateTime);
   }, [dateTime, destination, origin]);
 
-  const isEmpty = (value) => {
+  const isEmpty = (value: string) => {
     return !value;
   };
 
-  const handleSetDateTime = (value) => {
+  const handleSetDateTime = (value: string) => {
     dispatch(itineraryActions.setDateTime(value));
   };
 

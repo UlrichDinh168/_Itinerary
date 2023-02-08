@@ -1,6 +1,6 @@
 /** @format */
 
-export const setupQuery = (value) => {
+export const setupQuery = (value: any) => {
   return `
     {
       plan(

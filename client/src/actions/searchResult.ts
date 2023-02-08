@@ -1,5 +1,3 @@
-/** @format */
-
 import { seachResultTypes as types } from "./types";
 
 export const setDefaultResult = (payload) => {

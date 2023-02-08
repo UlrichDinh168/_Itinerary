@@ -6,7 +6,7 @@ import SearchArea from "./Search/SearchArea";
 import Itineraries from "./Itinerary/Itineraries";
 import Loading from "../shared/Loading";
 
-const Container = () => {
+export const Container = () => {
   const loading = useSelector((state) => state.itinerary.loading);
 
   return (
@@ -21,4 +21,3 @@ const Container = () => {
   );
 };
 
-export default Container;

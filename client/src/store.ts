@@ -1,8 +1,10 @@
 /** @format */
 
 import { createStore, applyMiddleware, compose } from "redux";
+import { configureStore } from '@reduxjs/toolkit'
+
 import thunk from "redux-thunk";
-import { rootReducer } from "./reducers";
+import { rootReducer } from "./reducers/index";
 import { PERSIST_KEY, BACKEND_BASE_URL } from "./constants";
 import { multiClientMiddleware } from "redux-axios-middleware";
 import { persistStore, persistReducer } from "redux-persist";
@@ -10,9 +12,12 @@ import { createLogger } from "redux-logger";
 import storage from "redux-persist/lib/storage";
 import axios from "axios";
 
+
+import { combineReducers } from "redux";
+
+
 // const baseURL = BACKEND_BASE_URL || "http://localhost:8000";
-// const baseURL = "http://ec2-18-194-249-0.eu-central-1.compute.amazonaws.com:8000";
-const baseURL = "https://ulrich-itinerary.herokuapp.com";
+const baseURL = "http://localhost:8000";
 
 // Config redux-persist
 const persistConfig = {
@@ -41,10 +46,15 @@ if (window.__REDUX_DEVTOOLS_EXTENSION__) {
   tools.push(window.__REDUX_DEVTOOLS_EXTENSION__());
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Create redux store
-const store = createStore(persistedReducer, compose(...tools));
-const persistor = persistStore(store);
 
-export { store, persistor };
+// const reducer = combineReducers({
+//   // here we will be adding reducers
+// })
+// const store = configureStore({
+//   reducer,
+// })
+
+const store = configureStore({ rootReducer, })
+export { store };
