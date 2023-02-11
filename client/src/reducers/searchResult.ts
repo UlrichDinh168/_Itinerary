@@ -39,43 +39,38 @@ export const seachResultReducer = createSlice({
         journeyPlanning: action.payload,
       };
     },
-
   },
 });
 
 
 export const getAddressLookup = (lat: any, lon: any) => (dispatch: Function) => {
   try {
-    instance.post(`/api/get-address-lookup`, { data: { lat, lon } })
-    dispatch(getAddressLookup(value))
-
+    const data = instance.post(`/api/get-address-lookup`, { data: { lat, lon } })
+    console.log(data, 'data');
+    // dispatch(setAddressSearch(data))
   } catch (error: any) {
     throw new Error(error);
-
   }
 }
-export const getAddressSearch = (value: string) => (dispatch: Function) => {
+
+export const getAddressSearch = (value: any) => (dispatch?: Function) => {
   try {
     const data = instance.post(`/api/get-address-search`,
-      { data: { text: value } })
-    dispatch(getAddressSearch(value))
+      { data: value })
+    console.log(data, 'data');
+    // dispatch(getAddressSearch(value))
     return data
   } catch (error: any) {
     throw new Error(error);
-
   }
-
 };
 
 export const getJourneyPlanning = (value: any) => {
   try {
     instance.post(`/api/get-itinerary-plan`, { data: value })
-
   } catch (error: any) {
     throw new Error(error);
-
   }
-
 };
 
 export const setJourneyPlanning = (payload: []) => {

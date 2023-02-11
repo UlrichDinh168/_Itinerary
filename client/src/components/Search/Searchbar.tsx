@@ -48,7 +48,7 @@ const Searchbar = ({ isOrigin }) => {
 
     if (input?.length > 2) {
       setTimeout(() => {
-        fetchSearchResults(input);
+        getAddressSearch(input);
       }, 300);
     }
   }, [input]);
@@ -62,31 +62,35 @@ const Searchbar = ({ isOrigin }) => {
     }
   }, [origin, destination]);
 
-  const fetchSearchResults = async (value: any) => {
-    try {
-      await dispatch(setLoading(true));
+  // const fetchSearchResults = async (value: any) => {
+  //   try {
+  //     console.log('here');
+  //     // await dispatch(setLoading(true));
+  //     await getAddressSearch(value);
+  //   } catch (err) {
+  //     console.log('2');
 
-      await (getAddressSearch(value));
-    } catch (err) {
-      setSearchResults([]);
-      dispatch(
-        notificationActions.showNotification({
-          type: NOTIFICATION_TYPE.warning,
-          message: err?.response?.data?.errors[0]?.message,
-        }),
-      );
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
+  //     setSearchResults([]);
+  //     dispatch(
+  //       notificationActions.showNotification({
+  //         type: NOTIFICATION_TYPE.warning,
+  //         message: err?.response?.data?.errors[0]?.message,
+  //       }),
+  //     );
+  //   } finally {
+  //     dispatch(setLoading(false));
+  //   }
+  // };
 
   const handleFocus = () => {
     setFocus(true);
-    input !== "" && fetchSearchResults(input);
+    input !== "" && getAddressSearch(input);
   };
 
   const setAddress = useCallback(
     (payload: any) => {
+      console.log(payload, 'payload');
+
       if (isOrigin) {
         dispatch(setOrigin(payload));
       } else {
@@ -104,7 +108,7 @@ const Searchbar = ({ isOrigin }) => {
     }
   };
 
-  const selectResult = (result) => {
+  const selectResult = (result: any) => {
     const cleanupResult = {
       name: result?.labelNameArray[0],
       lat: result?.coordinates?.lat,
@@ -132,7 +136,7 @@ const Searchbar = ({ isOrigin }) => {
         lon: 0.0,
       });
     }
-    dispatch(getAddressSearch([]));
+    // dispatch(getAddressSearch([]));
   };
 
   const onError = (error: any) => {
