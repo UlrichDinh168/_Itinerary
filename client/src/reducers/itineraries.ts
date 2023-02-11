@@ -1,6 +1,6 @@
-import { itineraryTypes as types } from "../actions/types";
+import { createSlice } from '@reduxjs/toolkit'
 
-interface initialState {
+interface Itinerary {
   origin: {
     name: string,
     lat: string,
@@ -16,27 +16,37 @@ interface initialState {
   loading: boolean,
 };
 
-export const itineraryReducer = (state: initialState, action: any) => {
-  switch (action.type) {
-    case types.setOrigin:
-      return { ...state, origin: action.payload };
-    case types.setDestination:
+export const itineraryReducer = createSlice({
+  name: 'itinerary',
+  initialState: <Itinerary>{},
+  reducers: {
+    setOrigin: (state, action) => {
+      return { ...state, origin: action.payload }
+    },
+    setDestination: (state, action) => {
       return { ...state, destination: action.payload };
-    case types.setOriginName:
+    },
+    setOriginName: (state, action) => {
       return { ...state, origin: { ...state.origin, name: action.payload } };
-    case types.setDestinationName:
+    },
+    setDestinationName: (state, action) => {
       return {
         ...state,
         destination: { ...state.destination, name: action.payload },
       };
-    case types.setDateTime:
+    },
+    setDateTime: (state, action) => {
       return { ...state, dateTime: action.payload };
-    case types.setLoading:
+    },
+    setLoading: (state, action) => {
       return {
         ...state,
         loading: action.payload,
       };
-    default:
-      return state;
-  }
-};
+    }
+  },
+});
+
+export default itineraryReducer.reducer
+
+export const { setOrigin, setDestination, setOriginName, setDestinationName, setDateTime, setLoading } = itineraryReducer.actions

@@ -1,8 +1,22 @@
 /** @format */
 
-import React from "react";
+import React, { Ref } from "react";
 import TextField from "@mui/material/TextField";
 import ClearIcon from "@mui/icons-material/Clear";
+
+type Props = {
+  label: string,
+  placeholder: string,
+  name: string,
+  focus: string,
+  reference: Ref<any> | undefined,
+  id: string,
+  onFocus: () => void,
+  onBlur: () => void,
+  onChange: () => void,
+  value: string,
+  handleClickInputIcon: string,
+}
 
 const Input = ({
   label,
@@ -16,7 +30,7 @@ const Input = ({
   value,
   onBlur,
   handleClickInputIcon,
-}) => {
+}: Props) => {
   return (
     <div className='input__wrapper' ref={reference[1]}>
       <TextField

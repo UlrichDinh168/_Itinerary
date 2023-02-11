@@ -4,10 +4,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import SearchArea from "./Search/SearchArea";
 import Itineraries from "./Itinerary/Itineraries";
-import Loading from "../shared/Loading";
+import { Loading } from "../shared/Loading";
 
-export const Container = () => {
-  const loading = useSelector((state) => state.itinerary.loading);
+export const Container = (): JSX.Element => {
+  const loading = useSelector((state: any) => state.itinerary.loading);
 
   return (
     <div className='main__layout'>

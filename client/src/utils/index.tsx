@@ -1,7 +1,8 @@
 import { MODE } from "../constants";
+import React from "react";
 
-export const simplifyResJson = (json) => {
-  return json.map((item) => {
+export const simplifyResJson = (json: []) => {
+  return json.map((item: any) => {
     const id = item?.properties?.id;
     const labelArray = item?.properties?.label.split(", ");
     return {
@@ -16,7 +17,7 @@ export const simplifyResJson = (json) => {
   });
 };
 
-export const hasInvalidValue = (value) => {
+export const hasInvalidValue = (value: any) => {
   return (
     value === null || // check for null
     value === undefined || // check for undefined
@@ -29,7 +30,7 @@ export const hasInvalidValue = (value) => {
   );
 };
 
-export const renderBandColor = (mode) => {
+export const renderBandColor = (mode: string) => {
   let color = "";
   switch (mode) {
     case MODE.BUS:
@@ -45,7 +46,7 @@ export const renderBandColor = (mode) => {
   }
 };
 
-export const renderIcon = (mode) => {
+export const renderIcon = (mode: any): JSX.Element => {
   let icon = "";
   switch (mode) {
     case MODE.BUS:
@@ -63,10 +64,10 @@ export const renderIcon = (mode) => {
     default:
       icon = "directions_walk";
   }
-  return <span className='material-icons'>{icon}</span>;
+  return <span className='material-icons'> {icon} </span>;
 };
 
-export const convertMinToHour = (time) => {
+export const convertMinToHour = (time: number) => {
   if (time < 3600) {
     return `${Math.ceil(time / 60)} min`;
   } else {
@@ -75,3 +76,26 @@ export const convertMinToHour = (time) => {
     return `${hour} h ${min} min`;
   }
 };
+
+/**
+ * Debounce an operation.
+ * @param {void} func - The function that you want to execute after the debounce time.
+    * @param {number} wait - The amount of time you want the debounce function to wait after the last received action before executing func.
+    * @returns {func} The function being passed as argument.
+    */
+export function debounce(func: Function, wait: number) {
+  let timeout: any;
+
+  return function executedFunction(...args: []) {
+    const later = () => {
+      // End the debounce
+      timeout = null;
+      // Execute the input function
+      func(...args);
+    };
+    // Prevents the input function from executed
+    clearTimeout(timeout);
+    // Restart the debounce
+    timeout = setTimeout(later, wait);
+  };
+}

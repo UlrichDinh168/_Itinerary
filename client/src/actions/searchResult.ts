@@ -1,20 +1,20 @@
 import { seachResultTypes as types } from "./types";
 
-export const setDefaultResult = (payload) => {
-  return {
-    type: types.setDefaultResult,
-    payload,
-  };
-};
+// export const setDefaultResult = (payload:any) => {
+//   return {
+//     type: types.setDefaultResult,
+//     payload,
+//   };
+// };
 
-export const setTransportResult = (payload) => {
-  return {
-    type: types.setTransportResult,
-    payload,
-  };
-};
+// export const setTransportResult = (payload:any) => {
+//   return {
+//     type: types.setTransportResult,
+//     payload,
+//   };
+// };
 
-export const getAddressLookup = (lat, lon) => {
+export const getAddressLookup = (lat: string, lon: string) => {
   return {
     type: types.getAddressLookupResult,
     payload: {
@@ -26,7 +26,8 @@ export const getAddressLookup = (lat, lon) => {
     },
   };
 };
-export const getAddressSearch = (value) => {
+
+export const getAddressSearch = (value: string) => {
   return {
     type: types.getAddressSearch,
     payload: {
@@ -40,7 +41,7 @@ export const getAddressSearch = (value) => {
   };
 };
 
-export const getJourneyPlanning = (value) => {
+export const getJourneyPlanning = (value: any) => {
   return {
     type: types.getJourneyPlanning,
     payload: {
@@ -52,7 +53,7 @@ export const getJourneyPlanning = (value) => {
     },
   };
 };
-export const setJourneyPlanning = (payload) => {
+export const setJourneyPlanning = (payload: string) => {
   return {
     type: types.setJourneyPlanning,
     payload,

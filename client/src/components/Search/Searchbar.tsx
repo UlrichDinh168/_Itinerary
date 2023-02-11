@@ -1,5 +1,3 @@
-/** @format */
-
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { hasInvalidValue } from "../../utils";
@@ -11,14 +9,16 @@ import {
   notificationActions,
   searchResultActions,
 } from "../../actions";
+import { setOrigin, setDestination, setLoading } from '../../reducers/itineraries'
 import { NOTIFICATION_TYPE } from "../../constants";
+import { getAddressSearch, setJourneyPlanning } from "../../reducers/searchResult";
 
 const Searchbar = ({ isOrigin }) => {
   const dispatch = useDispatch();
 
-  const { origin, destination } = useSelector((state) => state?.itinerary);
+  const { origin, destination } = useSelector((state: any) => state?.itinerary);
 
-  const { addressSearch } = useSelector((state) => state?.searchResult);
+  const { addressSearch } = useSelector((state: any) => state?.searchResult);
   const wrapperRef = useRef(null);
   const address = isOrigin ? origin : destination;
   const inputName = isOrigin ? "origin" : "destination";
@@ -30,7 +30,7 @@ const Searchbar = ({ isOrigin }) => {
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { value } = e.target;
     setInput(value);
   };
@@ -54,19 +54,19 @@ const Searchbar = ({ isOrigin }) => {
   }, [input]);
 
   useEffect(() => {
-    if (origin.name === "" && destination.name === "") {
-      dispatch(searchResultActions.setJourneyPlanning([]));
+    if (origin?.name === "" && destination?.name === "") {
+      dispatch(setJourneyPlanning([]));
     }
-    if (origin.name !== "" && destination.name !== "") {
+    if (origin?.name !== "" && destination?.name !== "") {
       setValue();
     }
   }, [origin, destination]);
 
-  const fetchSearchResults = async (value) => {
+  const fetchSearchResults = async (value: any) => {
     try {
-      dispatch(itineraryActions.setLoading(true));
+      await dispatch(setLoading(true));
 
-      await dispatch(searchResultActions.getAddressSearch(value));
+      await (getAddressSearch(value));
     } catch (err) {
       setSearchResults([]);
       dispatch(
@@ -76,7 +76,7 @@ const Searchbar = ({ isOrigin }) => {
         }),
       );
     } finally {
-      dispatch(itineraryActions.setLoading(false));
+      dispatch(setLoading(false));
     }
   };
 
@@ -86,11 +86,11 @@ const Searchbar = ({ isOrigin }) => {
   };
 
   const setAddress = useCallback(
-    (payload) => {
+    (payload: any) => {
       if (isOrigin) {
-        dispatch(itineraryActions.setOrigin(payload));
+        dispatch(setOrigin(payload));
       } else {
-        dispatch(itineraryActions.setDestination(payload));
+        dispatch(setDestination(payload));
       }
     },
     [isOrigin],
@@ -98,9 +98,9 @@ const Searchbar = ({ isOrigin }) => {
 
   const setValue = () => {
     if (isOrigin) {
-      setInput(origin.name);
+      setInput(origin?.name);
     } else {
-      setInput(destination.name);
+      setInput(destination?.name);
     }
   };
 
@@ -132,10 +132,10 @@ const Searchbar = ({ isOrigin }) => {
         lon: 0.0,
       });
     }
-    dispatch(searchResultActions.getAddressSearch([]));
+    dispatch(getAddressSearch([]));
   };
 
-  const onError = (error) => {
+  const onError = (error: any) => {
     let errors = "";
     switch (error.code) {
       case error.PERMISSION_DENIED:
@@ -151,15 +151,15 @@ const Searchbar = ({ isOrigin }) => {
         errors = "An unknown error occurred.";
         break;
     }
-    return dispatch(notificationActions.showNotification({ message: errors }));
+    return dispatch(notificationActions.showNotification({ type: 'Error', message: errors }));
   };
 
-  const onSuccess = async (pos) => {
+  const onSuccess = async (pos: any) => {
     const { latitude, longitude } = pos?.coords;
     try {
-      dispatch(itineraryActions.setLoading(true));
+      dispatch(setLoading(true));
 
-      const res = await dispatch(
+      const res: any = await dispatch(
         searchResultActions.getAddressLookup(latitude, longitude),
       );
       const { labelNameArray, coordinates } = res.payload?.data?.data[0];
@@ -172,11 +172,12 @@ const Searchbar = ({ isOrigin }) => {
     } catch (e) {
       dispatch(
         notificationActions.showNotification({
+          type: 'Success',
           message: "Error occured",
         }),
       );
     } finally {
-      dispatch(itineraryActions.setLoading(false));
+      dispatch(setLoading(false));
     }
   };
 
@@ -190,6 +191,7 @@ const Searchbar = ({ isOrigin }) => {
         } else if (result.state === "denied") {
           dispatch(
             notificationActions.showNotification({
+              type: 'warning',
               message: "Please enable location on your browser",
             }),
           );
@@ -198,6 +200,7 @@ const Searchbar = ({ isOrigin }) => {
     } else {
       return dispatch(
         notificationActions.showNotification({
+          type: 'error',
           message: "Cannot get location",
         }),
       );

@@ -12,6 +12,7 @@
     "start": "npm start --prefix server",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "npm start --prefix client",
+    "server": "npm start --prefix server",
     "build": "npm run build --prefix client",
     "client-install": "cd client && npm install ",
     "server-install": "cd server && npm install",

@@ -1,13 +1,11 @@
-/** @format */
-
-import React from "react";
+import * as React from "react";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import { Container } from "./components";
 import Snackbar from "./shared/SnackBar";
 import Helmet from "react-helmet";
 
-const App = () => {
+export const App = () => {
   return (
     <Provider store={store}>
       <Helmet titleTemplate="Itinerary" defaultTitle="Itinerary">
@@ -22,4 +20,3 @@ const App = () => {
   );
 };
 
-export default App;

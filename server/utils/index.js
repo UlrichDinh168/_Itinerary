@@ -1,9 +1,9 @@
-/** @format */
-
 exports.normalizeData = (json) => {
   return json.map((item) => {
+    console.log(item, 'item');
     const id = item?.properties?.id;
-    const labelNameArray = item?.properties?.label.split(", ");
+    // const labelNameArray = item?.properties?.label.split(", ");
+    const labelNameArray = item?.properties?.label;
     return {
       id,
       labelNameArray,

@@ -1,14 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import { PersistGate } from "redux-persist/integration/react";
-import { persistor } from "./store";
+import * as React from "react";
+import ReactDOM from 'react-dom/client';
+
+import { App } from "./App";
 import "./styles/index.scss";
 
-ReactDOM.render(
-  <PersistGate loading={null} persistor={persistor}>
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+root.render(
+  <React.StrictMode>
     <App />
-  </PersistGate>,
-
-  document.getElementById("root"),
+  </React.StrictMode>
 );

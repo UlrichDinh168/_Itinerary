@@ -2,23 +2,34 @@
   "compilerOptions": {
     /* Language and Environment */
     "target": "ES6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    "lib": ["ES2017"],
+    "lib": ["es5", "es6", "dom"],
+    "baseUrl": "src",
+    "paths": {
+      "src/*": ["./src/*"]
+    },
     /* Modules */
-    "module": "ES6" /* Specify what module code is generated. */,
     // "rootDir": "./",                                  /* Specify the root folder within your source files. */
     // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
-
+    "jsx": "react-jsx",
     /* Emit */
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
-
+    "allowJs": true,
     /* Interop Constraints */
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
 
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
-
+    "noEmit": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     /* Completeness */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
-  }
+  },
+  "exclude": ["node_modules", ".nuxt", "dist"],
+  "include": ["src/**/*.ts", "src/utils/index.tsx"]
 }

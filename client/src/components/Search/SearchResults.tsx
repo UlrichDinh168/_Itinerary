@@ -1,5 +1,3 @@
-/** @format */
-
 import React from "react";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
 
@@ -13,8 +11,8 @@ const SearchResults = ({
 }) => {
   const renderResults = () => {
     if (searchResults?.length === 0) return;
-    if (searchValue.length > 2)
-      return searchResults?.map((result) => {
+    if (searchValue?.length > 2)
+      return searchResults?.map((result: any) => {
         const [main, ...secondary] = result.labelNameArray;
         return (
           <li

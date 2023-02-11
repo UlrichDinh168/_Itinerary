@@ -10,7 +10,7 @@ const {
 } = require("../controllers/apiRoutes.js");
 
 router.post("/get-address-lookup", getAddressLookup);
-router.post("/get-address-search", getAddressSearch);
+router.get("/get-address-search", getAddressSearch);
 router.post("/get-itinerary-plan", getItineraryPlan);
 
 exports.apiRoutes = router;

@@ -5,7 +5,11 @@ import ItineraryOverview from "./ItineraryOverview";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import ItineraryDetails from "./ItineraryDetails";
 
-const Itinerary = ({ itinerary }) => {
+interface ItineraryProps {
+  itinerary: any
+}
+
+const Itinerary = ({ itinerary }: ItineraryProps) => {
   const [isExpand, setIsExpand] = React.useState(false);
   const wrapperRef = React.useRef(null);
 
@@ -14,6 +18,7 @@ const Itinerary = ({ itinerary }) => {
       setIsExpand(false);
     }
   });
+
   const showRouteDetail = () => {
     setIsExpand(true);
   };
@@ -23,14 +28,14 @@ const Itinerary = ({ itinerary }) => {
       <ItineraryOverview itinerary={itinerary} />
       <div className='itineraryDetails__container'>
         {isExpand &&
-          itinerary?.legs.map((leg, index) => {
+          itinerary?.legs.map((leg: string, index: any) => {
             const nextLeg = itinerary?.legs[index + 1];
             const isDestination = itinerary?.legs.length - 1;
             return (
               <ItineraryDetails
                 key={index}
                 leg={leg}
-                nextLeg={nextLeg}
+                // nextLeg={nextLeg}
                 isOrigin={index === 0}
                 isDestination={index === isDestination}
               />

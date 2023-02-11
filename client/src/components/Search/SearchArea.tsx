@@ -12,11 +12,12 @@ import Searchbar from "./Searchbar";
 import { hasInvalidValue } from "../../utils";
 import { NOTIFICATION_TYPE } from "../../constants";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { setLoading, setDateTime, setDestination, setDestinationName, setOrigin, setOriginName } from "../../reducers/itineraries";
 
 export const SearchArea = () => {
 
   const dispatch = useDispatch();
-  const itinerary = useSelector((state) => state.itinerary);
+  const itinerary = useSelector((state: any) => state.itinerary);
   const defaultDateTime = moment().toLocaleString();
 
   const currentDate = moment().format("YYYYMMDD");
@@ -33,11 +34,11 @@ export const SearchArea = () => {
   };
 
   const handleSetDateTime = (value: string) => {
-    dispatch(itineraryActions.setDateTime(value));
+    dispatch(setDateTime(value));
   };
 
   const setCurrentTime = () => {
-    dispatch(itineraryActions.setDateTime(defaultDateTime));
+    dispatch(setDateTime(defaultDateTime));
   };
 
   const handleSearch = async (origin, destination, dateTime) => {
@@ -56,7 +57,7 @@ export const SearchArea = () => {
       time: isEmpty(dateTime) ? currentTime : time,
     };
     try {
-      dispatch(itineraryActions.setLoading(true));
+      dispatch(setLoading(true));
       if (!hasInvalidValue(origin) && !hasInvalidValue(destination)) {
         await dispatch(searchResultActions.getJourneyPlanning(returnData));
       }
@@ -68,7 +69,7 @@ export const SearchArea = () => {
         }),
       );
     } finally {
-      dispatch(itineraryActions.setLoading(false));
+      dispatch(setLoading(false));
     }
   };
 

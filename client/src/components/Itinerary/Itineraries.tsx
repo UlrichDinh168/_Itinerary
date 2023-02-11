@@ -6,9 +6,10 @@ import { useSelector } from "react-redux";
 
 const Itineraries = () => {
   const itineraries = useSelector(
-    (state) => state.searchResult.journeyPlanning,
+    (state: any) => state.searchResult.journeyPlanning,
   );
-  const { origin, destination } = useSelector((state) => state?.itinerary);
+
+  const { origin, destination } = useSelector((state: any) => state?.itinerary);
 
   const [updatedItineraries, setUpdatedItineraries] =
     React.useState(itineraries);
@@ -17,14 +18,14 @@ const Itineraries = () => {
     setUpdatedItineraries(itineraries);
   }, [itineraries, origin, destination]);
 
+  const renderContent = () => {
+    if (updatedItineraries?.length === 0) return <p style={{ textAlign: "center" }}>No results</p>
+    return updatedItineraries?.map((itinerary: [], i: number) => <Itinerary key={i} itinerary={itinerary} />)
+  }
+
   return (
     <div className='itineraries'>
-      {updatedItineraries?.map((itinerary, i) => {
-        return <Itinerary key={i} itinerary={itinerary} />;
-      })}
-      {updatedItineraries.length === 0 ? (
-        <p style={{ textAlign: "center" }}>No results</p>
-      ) : null}
+      {renderContent()}
     </div>
   );
 };
