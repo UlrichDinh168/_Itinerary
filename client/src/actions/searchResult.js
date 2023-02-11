@@ -36,7 +36,7 @@ export const getAddressSearch = (value) => {
         header: { "Content-Type": "application/json" },
         method: "POST",
         url: `/api/get-address-search`,
-        data: { text: value },
+        data: { value },
       },
     },
   };

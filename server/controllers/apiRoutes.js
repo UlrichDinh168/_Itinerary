@@ -5,27 +5,41 @@ const { request, gql } = require("graphql-request");
 const { BACKEND_BASE_URL } = require("../../client/src/constants.js");
 
 const instance = axios.create({
-  baseURL: BACKEND_BASE_URL,
+  // baseURL: BACKEND_BASE_URL,
+  baseURL: 'http://api.digitransit.fi',
+  headers: {
+    Accept: 'application/json, text/plain, */*',
+    'User-Agent': 'axios/0.24.0'
+  },
 });
 
+// const name = async () => {
+
+//   const defaultData = await axios.get(
+//     `http://api.digitransit.fi/geocoding/v1/search?text=${'sello'}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
+//   );
+//   console.log(defaultData, 'defaultData');
+
+// }
+// name()
 
 exports.getAddressSearch = async (req, res) => {
-  const text = req?.body
+  const text = req?.body.value
+  console.log(text, 'text');
   try {
     if (text.length > 2) {
+
       const defaultData = await instance.get(
         `/geocoding/v1/search?text=${text}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
       );
-      const defaultDataJson = await defaultData.json();
 
       const transportData = await instance.get(
         `/geocoding/v1/search?text=${text}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
       );
-      const transportDataJson = await transportData.json();
 
       const combinedData = [
-        ...transportDataJson?.features,
-        ...defaultDataJson?.features,
+        ...transportData?.data?.features,
+        ...defaultData?.data?.features,
       ];
       if (combinedData.length === 0)
         return res.status(404).json({ message: "No results found!" });
@@ -43,7 +57,7 @@ exports.getAddressSearch = async (req, res) => {
 exports.getAddressLookup = async (req, res) => {
   const { lat, lon } = req?.body
   try {
-    const data = await await instance.get(
+    const data = await instance.get(
       `/geocoding/v1/reverse?point.lat=${lat}&point.lon=${lon}&lang=en&size=1&layers=address`,
     );
     const json = await data.json();
@@ -66,7 +80,7 @@ exports.getItineraryPlan = async (req, res) => {
     `;
 
     const responseData = await request(
-      "/routing/v1/routers/hsl/index/graphql",
+      "http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql",
       query,
     );
 
