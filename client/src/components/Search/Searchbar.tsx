@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { hasInvalidValue } from "../../utils";
+import { debounce, hasInvalidValue } from "../../utils";
 // import useOnClickOutside from "../../hooks/useOnClickOutside";
 import SearchResults from "./SearchResults";
 import Input from "../../shared/Input";
@@ -11,7 +11,7 @@ import {
 } from "../../actions";
 import { setOrigin, setDestination, setLoading } from '../../reducers/itineraries'
 import { NOTIFICATION_TYPE } from "../../constants";
-import { fetchAddressSearch, getAddressSearch, setJourneyPlanning } from "../../reducers/searchResult";
+import { fetchAddressSearch, setJourneyPlanning } from "../../reducers/searchResult";
 
 const Searchbar = ({ isOrigin }) => {
   const dispatch = useDispatch();
@@ -19,24 +19,28 @@ const Searchbar = ({ isOrigin }) => {
   const { origin, destination } = useSelector((state: any) => state?.itinerary);
 
   const { addressSearch } = useSelector((state: any) => state?.searchResult);
-  const wrapperRef = useRef(null);
+
+  const originRef = useRef<HTMLInputElement | null>(null)
+
+  const destRef = useRef<HTMLInputElement | null>(null)
+
 
   const address = isOrigin ? origin : destination;
   const inputName = isOrigin ? "origin" : "destination";
   const inputLabel = isOrigin ? "Origin" : "Destination";
   const inputId = isOrigin ? "origin-input" : "destination-input";
   const inputPlaceholder = isOrigin ? "Majurinkatu 3C" : "Pasila Espoo";
+  const inputRef = isOrigin ? originRef : destRef
 
   const [isFocus, setFocus] = useState(false);
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   console.log(input, 'input');
-  console.log(searchResults, 'searchResults');
 
   const handleChange = (e: any) => {
     const { value } = e.target;
+    // inputRef.current!.value = value
     setInput(value);
-    // dispatch(getAddressSearch(value))
   };
 
   useEffect(() => {
@@ -51,57 +55,31 @@ const Searchbar = ({ isOrigin }) => {
     if (input?.length === 0) return setSearchResults([]);
 
     if (input?.length > 2) {
-      console.log('useEffect');
-      fetchAddressSearch(input);
-
-      // setTimeout(() => {
-      //   fetchAddressSearch(input);
-      // }, 500);
+      debounce(dispatch(fetchAddressSearch(input)), 500)
     }
   }, [input]);
 
   useEffect(() => {
-    if (origin?.name === "" && destination?.name === "") {
-      setJourneyPlanning([]);
+    if (origin?.name === "" || destination?.name === "") {
+      dispatch(setJourneyPlanning([]));
     }
     if (origin?.name !== "" && destination?.name !== "") {
       setValue();
+
     }
   }, [origin, destination]);
 
-  // const fetchSearchResults = async (value: any) => {
-  //   try {
-  //     console.log('here');
-  //     // await dispatch(setLoading(true));
-  //     await getAddressSearch(value);
-  //   } catch (err) {
-  //     console.log('2');
-
-  //     setSearchResults([]);
-  //     dispatch(
-  //       notificationActions.showNotification({
-  //         type: NOTIFICATION_TYPE.warning,
-  //         message: err?.response?.data?.errors[0]?.message,
-  //       }),
-  //     );
-  //   } finally {
-  //     dispatch(setLoading(false));
-  //   }
-  // };
-
   const handleFocus = () => {
     setFocus(true);
-    input !== "" ?? fetchAddressSearch(input);
+    // input !== "" ?? fetchAddressSearch(input);
   };
 
   const setAddress = useCallback(
     (payload: any) => {
-      console.log(payload, 'payload');
-
       if (isOrigin) {
-        setOrigin(payload);
+        dispatch(setOrigin(payload));
       } else {
-        setDestination(payload);
+        dispatch(setDestination(payload));
       }
     },
     [isOrigin],
@@ -117,12 +95,15 @@ const Searchbar = ({ isOrigin }) => {
 
   const selectResult = (result: any) => {
     const cleanupResult = {
-      name: result?.labelNameArray[0],
+      name: result?.labelNameArray,
       lat: result?.coordinates?.lat,
       lon: result?.coordinates?.lon,
     };
     setAddress(cleanupResult);
+
     setInput(cleanupResult?.name);
+    setInput('')
+
     setFocus(false);
   };
 
@@ -171,7 +152,7 @@ const Searchbar = ({ isOrigin }) => {
       dispatch(setLoading(true));
 
       const res: any = await dispatch(
-        searchResultActions.getAddressLookup(latitude, longitude),
+        fetchAddressLookup(latitude, longitude),
       );
       const { labelNameArray, coordinates } = res.payload?.data?.data[0];
       setInput(labelNameArray[0]);
@@ -224,14 +205,14 @@ const Searchbar = ({ isOrigin }) => {
         id={inputId}
         label={inputLabel}
         placeholder={inputPlaceholder}
-        reference={[wrapperRef]}
+        reference={inputRef}
         onChange={handleChange}
         onFocus={handleFocus}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         name={inputName}
         value={input}
         focus={isFocus}
-        handleClickInputIcon={handleReset}
+      // handleClickInputIcon={handleReset}
       />
 
       {isFocus ? (

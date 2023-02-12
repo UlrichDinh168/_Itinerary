@@ -25,15 +25,7 @@ export const itineraryReducer = createSlice({
     setDestination: (state, action) => {
       return { ...state, destination: action.payload };
     },
-    setOriginName: (state, action) => {
-      return { ...state, origin: { ...state.origin, name: action.payload } };
-    },
-    setDestinationName: (state, action) => {
-      return {
-        ...state,
-        destination: { ...state.destination, name: action.payload },
-      };
-    },
+
     setDateTime: (state, action) => {
       return { ...state, dateTime: action.payload };
     },
@@ -48,4 +40,4 @@ export const itineraryReducer = createSlice({
 
 export default itineraryReducer.reducer
 
-export const { setOrigin, setDestination, setOriginName, setDestinationName, setDateTime, setLoading } = itineraryReducer.actions
+export const { setOrigin, setDestination, setDateTime, setLoading } = itineraryReducer.actions

@@ -12,8 +12,8 @@ import Searchbar from "./Searchbar";
 import { hasInvalidValue, isEmpty } from "../../utils";
 import { NOTIFICATION_TYPE } from "../../constants";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { setLoading, setDateTime, setDestination, setDestinationName, setOrigin, setOriginName } from "../../reducers/itineraries";
-import { getJourneyPlanning } from "../../reducers/searchResult";
+import { setLoading, setDateTime, setDestination, setOrigin } from "../../reducers/itineraries";
+import { fetchJourneyPlanning } from "../../reducers/searchResult";
 import { showNotification } from "../../reducers/notification";
 
 export const SearchArea = () => {
@@ -59,17 +59,17 @@ export const SearchArea = () => {
     try {
       setLoading(true);
       if (!hasInvalidValue(origin) && !hasInvalidValue(destination)) {
-        await getJourneyPlanning(returnData);
+        await dispatch(fetchJourneyPlanning(returnData));
       }
     } catch (err) {
-      dispatch(
-        showNotification({
-          type: NOTIFICATION_TYPE.warning,
-          message: err?.response?.data?.errors[0]?.message,
-        }),
-      );
+      // dispatch(
+      //   showNotification({
+      //     type: NOTIFICATION_TYPE.warning,
+      //     message: err?.response?.data?.errors[0]?.message,
+      //   }),
+      // );
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
   };
 

@@ -1,7 +1,7 @@
 import { seachResultTypes as types } from "../actions/types";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from "axios";
-
+import { AppThunk, AppDispatch } from "store";
 const instance = axios.create({
   baseURL: "http://localhost:8000",
 });
@@ -21,19 +21,11 @@ export const seachResultReducer = createSlice({
   name: 'searchResult',
   initialState,
   reducers: {
-    getAddressSearchSuccess: (state, action) => {
-      return { ...state, addressSearch: action.payload.data.data }
+    setAddressSearch: (state, action) => {
+      return { ...state, addressSearch: action.payload.data.data };
     },
-    getAddressSearch: (state, action) => {
-      return { ...state, addressSearch: action.payload };
-    },
-    getJourneyPlanningSuccess: (state, action) => {
-      return {
-        ...state,
-        journeyPlanning: action.payload.data.data,
-      };
-    },
-    setJourneyPlanningSuccess: (state, action) => {
+
+    setJourneyPlanning: (state, action) => {
       return {
         ...state,
         journeyPlanning: action.payload,
@@ -42,59 +34,52 @@ export const seachResultReducer = createSlice({
   },
 });
 
+// Actions
+export const { setAddressSearch, setJourneyPlanning } = seachResultReducer.actions
 
-export const getAddressLookup = (lat: any, lon: any) => (dispatch: Function) => {
-  try {
-    const data = instance.post(`/api/get-address-lookup`, { data: { lat, lon } })
-    console.log(data, 'data');
-    // dispatch(setAddressSearch(data))
-  } catch (error: any) {
-    throw new Error(error);
-  }
-}
-export const fetchAddressSearch = async (value: any) => {
-  try {
-    const data = await instance.post(`/api/get-address-search`,
-      { data: value })
-    console.log(data, 'datgga');
-    // dispatch(getAddressSearch(value))
-    return data
-  } catch (error: any) {
-    throw new Error(error);
-  }
-}
-// export const fetchAddressSearch = (value: any) => async (dispatch: any) => {
-//   console.log('fetchAddressSearch');
-
+// export const fetchAddressSearch = async (value: any) => {
 //   try {
 //     const data = await instance.post(`/api/get-address-search`,
 //       { data: value })
-//     console.log(data, 'data');
-//     dispatch(getAddressSearch(value))
+//     console.log(data, 'datgga');
+//     // dispatch(setAddressSearch(value))
 //     return data
 //   } catch (error: any) {
 //     throw new Error(error);
 //   }
-// };
+// }
 
-export const getJourneyPlanning = (value: any) => {
+export const fetchAddressSearch = (value: any): AppThunk => async (dispatch: AppDispatch) => {
   try {
-    instance.post(`/api/get-itinerary-plan`, { data: value })
+    const data = await instance.post(`/api/get-address-search`, { data: value })
+    dispatch(setAddressSearch(data))
   } catch (error: any) {
     throw new Error(error);
   }
 };
 
-export const setJourneyPlanning = (payload: []) => {
-  return {
-    type: types.setJourneyPlanning,
-    payload,
-  };
+export const fetchAddressLookup = (lat: any, lon: any) => (dispatch: Function) => {
+  try {
+    const data = instance.post(`/api/get-address-lookup`, { data: { lat, lon } })
+    dispatch(setAddressSearch(data))
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export const fetchJourneyPlanning = (value: any): AppThunk => async (dispatch: AppDispatch) => {
+  console.log('AAÁ');
+
+  try {
+    const data = await instance.post(`/api/get-itinerary-plan`, { data: value })
+    console.log(data, 'data');
+    dispatch(setJourneyPlanning(data))
+  } catch (error: any) {
+    throw new Error(error);
+  }
 };
 
-export default seachResultReducer.reducer
 
-// Actions
-export const { getAddressSearchSuccess, getAddressSearch, getJourneyPlanningSuccess, setJourneyPlanningSuccess } = seachResultReducer.actions
+export default seachResultReducer.reducer
 
 

@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 
 const Itineraries = () => {
   const itineraries = useSelector(
-    (state: any) => state.searchResult.journeyPlanning,
+    (state: any) => state.searchResult.journeyPlanning.data.data,
   );
 
   const { origin, destination } = useSelector((state: any) => state?.itinerary);

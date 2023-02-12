@@ -13,7 +13,7 @@ const SearchResults = ({
     if (searchResults?.length === 0) return;
     if (searchValue?.length > 2)
       return searchResults?.map((result: any) => {
-        const [main, ...secondary] = result.labelNameArray;
+        const [main, ...secondary] = result.labelNameArray.split(',');
         return (
           <li
             className='address'

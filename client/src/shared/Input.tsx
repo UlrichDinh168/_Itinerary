@@ -8,12 +8,12 @@ type Props = {
   label: string,
   placeholder: string,
   name: string,
-  focus: string,
+  focus: boolean,
   reference: Ref<any> | undefined,
   id: string,
   onFocus: () => void,
   onBlur: () => void,
-  onChange: (value: string) => void,
+  onChange: (e: any) => void,
   value: string,
   handleClickInputIcon: string,
 }
@@ -32,7 +32,7 @@ const Input = ({
   handleClickInputIcon,
 }: Props) => {
   return (
-    <div className='input__wrapper' ref={reference[1]}>
+    <div className='input__wrapper' ref={reference}>
       <TextField
         type='text'
         label={label}
@@ -41,7 +41,7 @@ const Input = ({
         placeholder={placeholder}
         onChange={onChange}
         size='small'
-        inputRef={reference[0]}
+        inputRef={reference}
         id={id}
         sx={{ m: 1, width: "39.5ch" }}
         onFocus={onFocus}
