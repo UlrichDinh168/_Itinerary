@@ -8,7 +8,7 @@ import axios from "axios";
 // const baseURL = BACKEND_BASE_URL || "http://localhost:8000";
 // const baseURL = "http://localhost:8000";
 
-// const client = {
+// export const instance = {
 //   default: {
 //     client: axios.create({
 //       baseURL: baseURL,
@@ -18,7 +18,7 @@ import axios from "axios";
 // };
 
 
-// const middleware = [thunk, multiClientMiddleware(client)];
+// const middleware = [ multiClientMiddleware(client)];
 // const isProduction = process.env.NODE_ENV === "production";
 // if (!isProduction) {
 //   const logger = createLogger();
@@ -35,7 +35,7 @@ import axios from "axios";
 // Create redux store
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: [logger,],
+  middleware: [logger],
   devTools: process.env.NODE_ENV !== 'production',
 })
 

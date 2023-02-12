@@ -13,7 +13,6 @@ interface Itinerary {
   },
 
   dateTime: string,
-  loading: boolean,
 };
 
 export const itineraryReducer = createSlice({

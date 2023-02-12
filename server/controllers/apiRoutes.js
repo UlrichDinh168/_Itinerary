@@ -8,29 +8,31 @@ const instance = axios.create({
 
 const name = async () => {
   const defaultData = await instance.get(
-    `/geocoding/v1/search?text=${'majurinkatu'}&lang=en`,
+    `/geocoding/v1/search?text=${'sello'}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
   );
+  // console.log(defaultData.data.features, 'defaultData');
 
-  console.log((defaultData), 'defaultData');
 }
-
 name()
 
 exports.getAddressSearch = async (req, res) => {
   const data = req.body
+  console.log(data, 'datajjj');
+
   try {
     if (data.text?.length > 2) {
-      const defaultData = await instance.get(
-        `/geocoding/v1/search?text=${data.text}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
+      const defaultData = await instance.post(
+        `/geocoding/v1/search?text=${data.data}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
       );
 
-      const transportData = await instance.get(
-        `/geocoding/v1/search?text=${data.text}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
+      const transportData = await instance.post(
+        `/geocoding/v1/search?text=${data.data}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
       );
 
+      console.log(defaultData, 'defaultData');
       const combinedData = [
-        ...transportData?.features,
-        ...defaultData?.features,
+        ...transportData?.data?.features,
+        ...defaultData?.data?.features,
       ];
 
       if (combinedData.length === 0)

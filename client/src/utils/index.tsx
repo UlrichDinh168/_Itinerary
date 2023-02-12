@@ -1,6 +1,11 @@
 import { MODE } from "../constants";
 import React from "react";
 
+export const isEmpty = (value: string) => {
+  return !value;
+};
+
+
 export const simplifyResJson = (json: []) => {
   return json.map((item: any) => {
     const id = item?.properties?.id;

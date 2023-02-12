@@ -13,7 +13,7 @@ type Props = {
   id: string,
   onFocus: () => void,
   onBlur: () => void,
-  onChange: () => void,
+  onChange: (value: string) => void,
   value: string,
   handleClickInputIcon: string,
 }

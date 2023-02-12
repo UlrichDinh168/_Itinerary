@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL || "http://localhost:8000",
+  baseURL: "http://localhost:8000",
 });
 
 interface SearchResult {
@@ -24,7 +24,7 @@ export const seachResultReducer = createSlice({
     getAddressSearchSuccess: (state, action) => {
       return { ...state, addressSearch: action.payload.data.data }
     },
-    setAddressSearch: (state, action) => {
+    getAddressSearch: (state, action) => {
       return { ...state, addressSearch: action.payload };
     },
     getJourneyPlanningSuccess: (state, action) => {
@@ -52,18 +52,30 @@ export const getAddressLookup = (lat: any, lon: any) => (dispatch: Function) => 
     throw new Error(error);
   }
 }
-
-export const getAddressSearch = (value: any) => (dispatch?: Function) => {
+export const fetchAddressSearch = async (value: any) => {
   try {
-    const data = instance.post(`/api/get-address-search`,
+    const data = await instance.post(`/api/get-address-search`,
       { data: value })
-    console.log(data, 'data');
+    console.log(data, 'datgga');
     // dispatch(getAddressSearch(value))
     return data
   } catch (error: any) {
     throw new Error(error);
   }
-};
+}
+// export const fetchAddressSearch = (value: any) => async (dispatch: any) => {
+//   console.log('fetchAddressSearch');
+
+//   try {
+//     const data = await instance.post(`/api/get-address-search`,
+//       { data: value })
+//     console.log(data, 'data');
+//     dispatch(getAddressSearch(value))
+//     return data
+//   } catch (error: any) {
+//     throw new Error(error);
+//   }
+// };
 
 export const getJourneyPlanning = (value: any) => {
   try {
@@ -83,6 +95,6 @@ export const setJourneyPlanning = (payload: []) => {
 export default seachResultReducer.reducer
 
 // Actions
-export const { getAddressSearchSuccess, setAddressSearch, getJourneyPlanningSuccess, setJourneyPlanningSuccess } = seachResultReducer.actions
+export const { getAddressSearchSuccess, getAddressSearch, getJourneyPlanningSuccess, setJourneyPlanningSuccess } = seachResultReducer.actions
 
 

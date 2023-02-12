@@ -11,7 +11,7 @@ import {
 } from "../../actions";
 import { setOrigin, setDestination, setLoading } from '../../reducers/itineraries'
 import { NOTIFICATION_TYPE } from "../../constants";
-import { getAddressSearch, setJourneyPlanning } from "../../reducers/searchResult";
+import { fetchAddressSearch, getAddressSearch, setJourneyPlanning } from "../../reducers/searchResult";
 
 const Searchbar = ({ isOrigin }) => {
   const dispatch = useDispatch();
@@ -20,6 +20,7 @@ const Searchbar = ({ isOrigin }) => {
 
   const { addressSearch } = useSelector((state: any) => state?.searchResult);
   const wrapperRef = useRef(null);
+
   const address = isOrigin ? origin : destination;
   const inputName = isOrigin ? "origin" : "destination";
   const inputLabel = isOrigin ? "Origin" : "Destination";
@@ -29,10 +30,13 @@ const Searchbar = ({ isOrigin }) => {
   const [isFocus, setFocus] = useState(false);
   const [input, setInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  console.log(input, 'input');
+  console.log(searchResults, 'searchResults');
 
   const handleChange = (e: any) => {
     const { value } = e.target;
     setInput(value);
+    // dispatch(getAddressSearch(value))
   };
 
   useEffect(() => {
@@ -47,15 +51,18 @@ const Searchbar = ({ isOrigin }) => {
     if (input?.length === 0) return setSearchResults([]);
 
     if (input?.length > 2) {
-      setTimeout(() => {
-        getAddressSearch(input);
-      }, 300);
+      console.log('useEffect');
+      fetchAddressSearch(input);
+
+      // setTimeout(() => {
+      //   fetchAddressSearch(input);
+      // }, 500);
     }
   }, [input]);
 
   useEffect(() => {
     if (origin?.name === "" && destination?.name === "") {
-      dispatch(setJourneyPlanning([]));
+      setJourneyPlanning([]);
     }
     if (origin?.name !== "" && destination?.name !== "") {
       setValue();
@@ -84,7 +91,7 @@ const Searchbar = ({ isOrigin }) => {
 
   const handleFocus = () => {
     setFocus(true);
-    input !== "" && getAddressSearch(input);
+    input !== "" ?? fetchAddressSearch(input);
   };
 
   const setAddress = useCallback(
@@ -92,9 +99,9 @@ const Searchbar = ({ isOrigin }) => {
       console.log(payload, 'payload');
 
       if (isOrigin) {
-        dispatch(setOrigin(payload));
+        setOrigin(payload);
       } else {
-        dispatch(setDestination(payload));
+        setDestination(payload);
       }
     },
     [isOrigin],

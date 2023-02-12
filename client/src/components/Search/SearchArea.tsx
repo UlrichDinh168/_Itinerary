@@ -9,15 +9,19 @@ import {
   searchResultActions,
 } from "../../actions";
 import Searchbar from "./Searchbar";
-import { hasInvalidValue } from "../../utils";
+import { hasInvalidValue, isEmpty } from "../../utils";
 import { NOTIFICATION_TYPE } from "../../constants";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { setLoading, setDateTime, setDestination, setDestinationName, setOrigin, setOriginName } from "../../reducers/itineraries";
+import { getJourneyPlanning } from "../../reducers/searchResult";
+import { showNotification } from "../../reducers/notification";
 
 export const SearchArea = () => {
 
   const dispatch = useDispatch();
   const itinerary = useSelector((state: any) => state.itinerary);
+  // console.log(itinerary, 'itinerary');
+
   const defaultDateTime = moment().toLocaleString();
 
   const currentDate = moment().format("YYYYMMDD");
@@ -29,10 +33,6 @@ export const SearchArea = () => {
     handleSearch(origin, destination, dateTime);
   }, [dateTime, destination, origin]);
 
-  const isEmpty = (value: string) => {
-    return !value;
-  };
-
   const handleSetDateTime = (value: string) => {
     dispatch(setDateTime(value));
   };
@@ -41,7 +41,7 @@ export const SearchArea = () => {
     dispatch(setDateTime(defaultDateTime));
   };
 
-  const handleSearch = async (origin, destination, dateTime) => {
+  const handleSearch = async (origin: any, destination: any, dateTime: any) => {
     const date = moment(dateTime).format("YYYYMMDD");
     const time = moment(dateTime).format("HH:mm:ss");
     const returnData = {
@@ -57,19 +57,19 @@ export const SearchArea = () => {
       time: isEmpty(dateTime) ? currentTime : time,
     };
     try {
-      dispatch(setLoading(true));
+      setLoading(true);
       if (!hasInvalidValue(origin) && !hasInvalidValue(destination)) {
-        await dispatch(searchResultActions.getJourneyPlanning(returnData));
+        await getJourneyPlanning(returnData);
       }
     } catch (err) {
       dispatch(
-        notificationActions.showNotification({
+        showNotification({
           type: NOTIFICATION_TYPE.warning,
           message: err?.response?.data?.errors[0]?.message,
         }),
       );
     } finally {
-      dispatch(setLoading(false));
+      setLoading(false);
     }
   };
 
