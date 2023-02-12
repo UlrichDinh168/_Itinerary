@@ -3,33 +3,22 @@ const axios = require('axios')
 const { request, gql } = require("graphql-request");
 
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL || "https://api.digitransit.fi/",
+  baseURL: 'http://api.digitransit.fi',
 });
 
-const name = async () => {
-  const defaultData = await instance.get(
-    `/geocoding/v1/search?text=${'sello'}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
-  );
-  // console.log(defaultData.data.features, 'defaultData');
-
-}
-name()
 
 exports.getAddressSearch = async (req, res) => {
-  const data = req.body
-  console.log(data, 'datajjj');
-
+  const text = req.body
   try {
-    if (data.text?.length > 2) {
-      const defaultData = await instance.post(
-        `/geocoding/v1/search?text=${data.data}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
+    if (text.data?.length > 2) {
+      const defaultData = await instance.get(
+        `/geocoding/v1/search?text=${text.data}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
       );
 
-      const transportData = await instance.post(
-        `/geocoding/v1/search?text=${data.data}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
+      const transportData = await instance.get(
+        `/geocoding/v1/search?text=${text.data}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
       );
 
-      console.log(defaultData, 'defaultData');
       const combinedData = [
         ...transportData?.data?.features,
         ...defaultData?.data?.features,
@@ -73,14 +62,10 @@ exports.getItineraryPlan = async (req, res) => {
   const data = req.body
   try {
     const query = gql`
-      ${createQuery(data)}
+      ${createQuery(data.data)}
     `;
 
-    const itineraryPlan = await instance.get(
-      "/routing/v1/routers/hsl/index/graphql",
-      query,
-    );
-
+    const itineraryPlan = await request("https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql", query)
     res.status(201).json({
       message: "Location fetched succesfully",
       data: itineraryPlan?.plan?.itineraries,
