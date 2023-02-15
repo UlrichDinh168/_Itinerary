@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
-import itineraryReducer from "./itineraries";
+import searchResultSlice from "./itineraries";
 import notificationReducer from "./notification";
 import seachResultReducer from "./searchResult";
 
 export const rootReducer = combineReducers({
-  itinerary: itineraryReducer,
+  itinerary: searchResultSlice,
   notification: notificationReducer,
   searchResult: seachResultReducer,
 });
