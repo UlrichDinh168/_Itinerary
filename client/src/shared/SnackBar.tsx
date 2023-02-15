@@ -4,63 +4,50 @@ import Alert from "@mui/material/Alert";
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
+import { resetNotification } from "../reducers/notification";
 // actions
-import { notificationActions } from "../actions";
-
-// const Alert = React.forwardRef(function Alert(props) {
-//   return <Alert elevation={6} variant='filled' {...props} />;
-// });
 
 export default function BasicAlerts() {
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
-  const notification = useSelector((state: any) => state.notification.notification);
+  const { message, type } = useSelector((state: any) => state.notification);
 
   React.useEffect(() => {
-    if (notification) {
+    if (message) {
       setOpen(true);
     }
-  }, [notification]);
+  }, [message]);
 
   const handleClose = () => {
     // if (reason === "clickaway") {
     //   return;
     // }
-    dispatch(notificationActions.resetNotification());
+    dispatch(resetNotification({ message: '', type: '' }));
     setOpen(false);
   };
-  if (!notification) {
+  if (!message) {
     return null;
   }
 
-  const { message, duration, type } = notification;
   return (
-    // <div className='snackbar'>
-    //   <Stack open={open} autoHideDuration={duration} onClose={handleClose}>
-    //     <div>
-    //       <Alert onClose={handleClose} severity={type}>
-    //         {message}
-    //       </Alert>
-    //     </div>
-    //   </Stack>
-    // </div>
-    <Collapse in={open}>
-      <Alert
-        severity={type}
-        action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={() => handleClose()}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
-        }
-        sx={{ mb: 2 }}
-      >
-        {message}
-      </Alert>
-    </Collapse>
+    <div className="notification" onClick={() => handleClose()}>
+      <Collapse in={open} easing={{ enter: '1000', exit: '1000' }} >
+        <Alert
+          severity={type}
+        //   action={
+        //     <IconButton
+        //       aria-label="close"
+        //       color="inherit"
+        //       size="small"
+        //     >
+        //       <CloseIcon fontSize="inherit" />
+        //     </IconButton>
+        //   }
+        //   sx={{ mb: 2 }}
+        >
+          <span> {message}</span>
+        </Alert>
+      </Collapse>
+    </div >
   );
 }

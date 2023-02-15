@@ -10,7 +10,6 @@ const override = css`
 `;
 
 export const Loading = (): JSX.Element =>
-  <div>
+  <div className='loading'>
     <PuffLoader css={override} size={100} color='#2C6CAF' />
-
   </div>

@@ -15,7 +15,8 @@ type Props = {
   onBlur: () => void,
   onChange: (e: any) => void,
   value: string,
-  handleClickInputIcon: string,
+  autoFocus: boolean,
+  handleClickInputIcon: () => void,
 }
 
 const Input = ({
@@ -26,13 +27,14 @@ const Input = ({
   reference,
   focus,
   id,
+  autoFocus,
   onFocus,
   value,
   onBlur,
   handleClickInputIcon,
 }: Props) => {
   return (
-    <div className='input__wrapper' ref={reference}>
+    <div className='input__wrapper' >
       <TextField
         type='text'
         label={label}
@@ -43,6 +45,7 @@ const Input = ({
         size='small'
         inputRef={reference}
         id={id}
+        autoFocus={autoFocus}
         sx={{ m: 1, width: "39.5ch" }}
         onFocus={onFocus}
         onBlur={onBlur}
