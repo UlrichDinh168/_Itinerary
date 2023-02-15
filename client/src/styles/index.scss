@@ -60,3 +60,19 @@ ul {
   width: 360px;
   max-width: 100%;
 }
+
+.loading{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.notification{
+  :hover{
+    cursor: pointer;
+  }
+  position: fixed;
+   right: 0;
+   margin: 10px
+
+}

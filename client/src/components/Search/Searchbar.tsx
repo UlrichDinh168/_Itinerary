@@ -1,29 +1,24 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { debounce, hasInvalidValue } from "../../utils";
+import { useSelector, } from "react-redux";
+import { debounce, } from "../../utils";
 // import useOnClickOutside from "../../hooks/useOnClickOutside";
 import SearchResults from "./SearchResults";
 import Input from "../../shared/Input";
-import {
-  itineraryActions,
-  notificationActions,
-  searchResultActions,
-} from "../../actions";
-import { setOrigin, setDestination, setLoading } from '../../reducers/itineraries'
-import { NOTIFICATION_TYPE } from "../../constants";
-import { fetchAddressSearch, setJourneyPlanning } from "../../reducers/searchResult";
+import { useAppDispatch } from '../../store'
+import { setOrigin, setDestination } from '../../reducers/itineraries'
+import { fetchAddressLookup, fetchAddressSearch, fetchJourneyPlanning, setIsloading } from "../../reducers/searchResult";
+import { showNotification } from "../../reducers/notification";
 
 const Searchbar = ({ isOrigin }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { origin, destination } = useSelector((state: any) => state?.itinerary);
+  const { isLoading } = useSelector((state: any) => state?.searchResult?.isLoading);
 
   const { addressSearch } = useSelector((state: any) => state?.searchResult);
 
   const originRef = useRef<HTMLInputElement | null>(null)
-
   const destRef = useRef<HTMLInputElement | null>(null)
-
 
   const address = isOrigin ? origin : destination;
   const inputName = isOrigin ? "origin" : "destination";
@@ -32,14 +27,12 @@ const Searchbar = ({ isOrigin }) => {
   const inputPlaceholder = isOrigin ? "Majurinkatu 3C" : "Pasila Espoo";
   const inputRef = isOrigin ? originRef : destRef
 
-  const [isFocus, setFocus] = useState(false);
-  const [input, setInput] = useState("");
+  const [isFocus, setIsFocus] = useState(false);
+  const [input, setInput] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  console.log(input, 'input');
 
   const handleChange = (e: any) => {
     const { value } = e.target;
-    // inputRef.current!.value = value
     setInput(value);
   };
 
@@ -53,29 +46,33 @@ const Searchbar = ({ isOrigin }) => {
 
   useEffect(() => {
     if (input?.length === 0) return setSearchResults([]);
-
     if (input?.length > 2) {
-      debounce(dispatch(fetchAddressSearch(input)), 500)
+      handleFetch(input)
     }
   }, [input]);
 
   useEffect(() => {
     if (origin?.name === "" || destination?.name === "") {
-      dispatch(setJourneyPlanning([]));
+      dispatch(fetchJourneyPlanning([]));
     }
     if (origin?.name !== "" && destination?.name !== "") {
       setValue();
-
     }
   }, [origin, destination]);
 
+  const handleFetch = (params: any) => {
+    if (params?.length > 2) return debounce(dispatch(fetchAddressSearch(params)), 500)
+  }
+
   const handleFocus = () => {
-    setFocus(true);
-    // input !== "" ?? fetchAddressSearch(input);
+    setIsFocus(true);
+    isOrigin ? handleFetch(origin?.name) : handleFetch(destination?.name)
   };
 
   const setAddress = useCallback(
     (payload: any) => {
+      console.log(isOrigin, 'isOrigin');
+
       if (isOrigin) {
         dispatch(setOrigin(payload));
       } else {
@@ -100,31 +97,20 @@ const Searchbar = ({ isOrigin }) => {
       lon: result?.coordinates?.lon,
     };
     setAddress(cleanupResult);
-
-    setInput(cleanupResult?.name);
-    setInput('')
-
-    setFocus(false);
+    setValue()
   };
 
   const handleReset = () => {
+    const searchValue = isOrigin ? origin?.name : destination?.name
+    setIsFocus(true)
     setInput("");
-    setAddress({ name: "", lat: 0.0, lon: 0.0 });
+    searchValue.length > 2 && handleFetch(searchValue)
+    inputRef.current?.focus()
   };
 
   const handleBlur = () => {
-    setFocus(false);
-    if (!hasInvalidValue(address)) {
-      setInput(address?.name);
-    } else {
-      setInput("");
-      setAddress({
-        name: "",
-        lat: 0.0,
-        lon: 0.0,
-      });
-    }
-    // dispatch(getAddressSearch([]));
+    setIsFocus(false);
+    isOrigin ? setInput(origin?.name) : setInput(destination?.name)
   };
 
   const onError = (error: any) => {
@@ -143,46 +129,48 @@ const Searchbar = ({ isOrigin }) => {
         errors = "An unknown error occurred.";
         break;
     }
-    return dispatch(notificationActions.showNotification({ type: 'Error', message: errors }));
+    return dispatch(showNotification({ type: 'error', message: errors }));
   };
 
-  const onSuccess = async (pos: any) => {
-    const { latitude, longitude } = pos?.coords;
-    try {
-      dispatch(setLoading(true));
+  const onSuccess = async (position: any) => {
+    const { latitude, longitude } = position?.coords;
+    console.log(latitude, longitude, 'position');
 
-      const res: any = await dispatch(
-        fetchAddressLookup(latitude, longitude),
-      );
-      const { labelNameArray, coordinates } = res.payload?.data?.data[0];
-      setInput(labelNameArray[0]);
+    try {
+      const res: any = await dispatch(fetchAddressLookup(latitude, longitude));
+      console.log(res, 'res');
+
+      const { labelNameArray, coordinates } = res.data?.data[0];
+      setInput(labelNameArray);
       setAddress({
-        name: labelNameArray[0],
+        name: labelNameArray,
         lat: coordinates.lat,
         lon: coordinates.lon,
       });
+      handleFetch(labelNameArray)
     } catch (e) {
       dispatch(
-        notificationActions.showNotification({
-          type: 'Success',
-          message: "Error occured",
-        }),
+        dispatch(showNotification({
+          type: 'error',
+          message: e,
+        })),
       );
-    } finally {
-      dispatch(setLoading(false));
     }
   };
 
   const getGeolocation = () => {
     if (navigator?.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
+
+        console.log(result, 'result');
+
         if (result.state === "granted") {
           navigator.geolocation.getCurrentPosition(onSuccess);
         } else if (result.state === "prompt") {
           navigator.geolocation.getCurrentPosition(onSuccess, onError);
         } else if (result.state === "denied") {
           dispatch(
-            notificationActions.showNotification({
+            showNotification({
               type: 'warning',
               message: "Please enable location on your browser",
             }),
@@ -191,7 +179,7 @@ const Searchbar = ({ isOrigin }) => {
       });
     } else {
       return dispatch(
-        notificationActions.showNotification({
+        showNotification({
           type: 'error',
           message: "Cannot get location",
         }),
@@ -208,11 +196,12 @@ const Searchbar = ({ isOrigin }) => {
         reference={inputRef}
         onChange={handleChange}
         onFocus={handleFocus}
-        // onBlur={handleBlur}
+        onBlur={handleBlur}
+        autoFocus={isFocus}
         name={inputName}
         value={input}
         focus={isFocus}
-      // handleClickInputIcon={handleReset}
+        handleClickInputIcon={handleReset}
       />
 
       {isFocus ? (

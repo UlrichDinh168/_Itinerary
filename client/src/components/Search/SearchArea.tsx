@@ -3,27 +3,20 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import CustomizedDateTimePicker from "../../shared/DateTimePicker";
-import {
-  itineraryActions,
-  notificationActions,
-  searchResultActions,
-} from "../../actions";
+
 import Searchbar from "./Searchbar";
 import { hasInvalidValue, isEmpty } from "../../utils";
 import { NOTIFICATION_TYPE } from "../../constants";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { setLoading, setDateTime, setDestination, setOrigin } from "../../reducers/itineraries";
+import { setDateTime } from "../../reducers/itineraries";
 import { fetchJourneyPlanning } from "../../reducers/searchResult";
 import { showNotification } from "../../reducers/notification";
-
+import { setIsloading } from '../../reducers/searchResult'
 export const SearchArea = () => {
 
   const dispatch = useDispatch();
   const itinerary = useSelector((state: any) => state.itinerary);
-  // console.log(itinerary, 'itinerary');
-
   const defaultDateTime = moment().toLocaleString();
-
   const currentDate = moment().format("YYYYMMDD");
   const currentTime = moment().format("HH:mm:ss");
 
@@ -57,19 +50,19 @@ export const SearchArea = () => {
       time: isEmpty(dateTime) ? currentTime : time,
     };
     try {
-      setLoading(true);
+      dispatch(setIsloading(true));
       if (!hasInvalidValue(origin) && !hasInvalidValue(destination)) {
         await dispatch(fetchJourneyPlanning(returnData));
       }
     } catch (err) {
-      // dispatch(
-      //   showNotification({
-      //     type: NOTIFICATION_TYPE.warning,
-      //     message: err?.response?.data?.errors[0]?.message,
-      //   }),
-      // );
+      dispatch(
+        showNotification({
+          type: NOTIFICATION_TYPE.warning,
+          message: err,
+        }),
+      );
     } finally {
-      // setLoading(false);
+      dispatch(setIsloading(false));
     }
   };
 

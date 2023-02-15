@@ -40,16 +40,20 @@ exports.getAddressSearch = async (req, res) => {
 
 exports.getAddressLookup = async (req, res) => {
   const data = req.body
+  console.log(data, 'data');
   try {
     const addressLookupData = await instance.get(
-      `/geocoding/v1/reverse?point.lat=${data.lat}&point.lon=${data.lon}&lang=en&size=1&layers=address`,
+      `/geocoding/v1/reverse?point.lat=${data.data.lat}&point.lon=${data.data.lon}&lang=en&size=1&layers=address`,
     );
-    if (addressLookupData?.features?.length === 0)
+    console.log(addressLookupData.data.geocoding.query, addressLookupData.data.features, 'addressLookupData');
+
+
+    if (addressLookupData?.data?.features?.length === 0)
       return res.status(404).json({ message: "No results found." });
 
     return res.status(201).json({
       message: "Location fetched succesfully",
-      data: normalizeData(json?.features),
+      data: normalizeData(addressLookupData?.data?.features),
     });
   } catch (error) {
     console.log("err", error);

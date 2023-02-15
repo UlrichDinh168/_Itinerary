@@ -1,13 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-import { notificationTypes as types } from "../actions/types";
-import { NOTIFICATION_TYPE, NOTIFICATION_DURATION } from "../constants";
-
 interface Notification {
-  notification?: any,
+  message?: string,
+  type: string
 };
 
-// export const notificationReducer = (state: initialState, action: any) => {
 //   if (action.type.endsWith("_FAIL")) {
 //     return {
 //       ...state,
@@ -15,31 +11,20 @@ interface Notification {
 //         type: NOTIFICATION_TYPE.error,
 //         message: action?.error?.response?.data?.message,
 //         duration: NOTIFICATION_DURATION,
-//       },
-//     };
-//   }
-//   switch (action.type) {
-//     case types.showNotification:
-//       return { ...state, notification: action.notification };
-//     case types.resetNotification:
-//       return state;
-//     default:
-//       return state;
-//   }
-// };
 
-const initialState = {} as Notification
-
+const initialState = {
+  message: '', type: ''
+} as Notification
 
 const notificationReducer = createSlice({
   name: 'notification',
   initialState: initialState,
   reducers: {
     showNotification: (state, action) => {
-      return { ...state, notification: action.payload.notification };
+      return { ...state, message: action.payload.message, type: action.payload.type };
     },
     resetNotification: (state, action) => {
-      return initialState;
+      return { ...state, message: action.payload.message, type: action.payload.type };
     },
   },
 });
