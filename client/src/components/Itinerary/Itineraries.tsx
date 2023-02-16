@@ -3,14 +3,13 @@
 import React from "react";
 import Itinerary from "./Itinerary";
 import { useSelector } from "react-redux";
-import { Loading } from '../../shared/Loading'
+
 const Itineraries = () => {
   const itineraries = useSelector(
     (state: any) => state?.searchResult?.journeyPlanning,
   );
 
   const { origin, destination } = useSelector((state: any) => state?.itinerary);
-  const { isLoading } = useSelector((state: any) => state?.searchResult)
 
   const [updatedItineraries, setUpdatedItineraries] =
     React.useState(itineraries);
@@ -26,7 +25,7 @@ const Itineraries = () => {
 
   return (
     <div className='itineraries'>
-      {isLoading ? <Loading /> : renderContent()}
+      {renderContent()}
     </div>
   );
 };

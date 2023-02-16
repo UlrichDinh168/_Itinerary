@@ -7,14 +7,12 @@ import Itineraries from "./Itinerary/Itineraries";
 import { Loading } from "../shared/Loading";
 
 export const Container = (): JSX.Element => {
-  const loading = useSelector((state: any) => state.itinerary.loading);
-
+  const loading = useSelector((state: any) => state.searchResult.isLoading);
   return (
     <div className='main__layout'>
       <h1> Itineraries Planning</h1>
       <div className='main__content'>
         <SearchArea />
-
         {loading ? <Loading /> : <Itineraries />}
       </div>
     </div>

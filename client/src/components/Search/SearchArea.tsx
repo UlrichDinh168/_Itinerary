@@ -12,31 +12,32 @@ import { setDateTime } from "../../reducers/itineraries";
 import { fetchJourneyPlanning } from "../../reducers/searchResult";
 import { showNotification } from "../../reducers/notification";
 import { setIsloading } from '../../reducers/searchResult'
+
 export const SearchArea = () => {
 
   const dispatch = useDispatch();
-  const itinerary = useSelector((state: any) => state.itinerary);
-  const defaultDateTime = moment().toLocaleString();
-  const currentDate = moment().format("YYYYMMDD");
-  const currentTime = moment().format("HH:mm:ss");
+  const defaultDateTime: string = moment().toLocaleString();
+  const currentDate: string = moment().format("YYYYMMDD");
+  const currentTime: string = moment().format("HH:mm:ss");
 
-  const { dateTime, destination, origin } = itinerary;
+  const { dateTime, destination, origin } = useSelector((state: any) => state.itinerary);
 
   React.useEffect(() => {
     handleSearch(origin, destination, dateTime);
   }, [dateTime, destination, origin]);
 
-  const handleSetDateTime = (value: string) => {
+  const handleSetDateTime = (value: string): void => {
     dispatch(setDateTime(value));
   };
 
-  const setCurrentTime = () => {
+  const setCurrentTime = (): void => {
     dispatch(setDateTime(defaultDateTime));
   };
 
-  const handleSearch = async (origin: any, destination: any, dateTime: any) => {
+  const handleSearch = async (origin: Record<string, any>, destination: Record<string, any>, dateTime: string) => {
     const date = moment(dateTime).format("YYYYMMDD");
     const time = moment(dateTime).format("HH:mm:ss");
+
     const returnData = {
       origin: {
         lat: origin?.lat,
@@ -49,11 +50,13 @@ export const SearchArea = () => {
       date: isEmpty(dateTime) ? currentDate : date,
       time: isEmpty(dateTime) ? currentTime : time,
     };
+
     try {
       dispatch(setIsloading(true));
-      if (!hasInvalidValue(origin) && !hasInvalidValue(destination)) {
+      if (!hasInvalidValue(origin?.name) && !hasInvalidValue(destination?.name)) {
         await dispatch(fetchJourneyPlanning(returnData));
       }
+      return
     } catch (err) {
       dispatch(
         showNotification({

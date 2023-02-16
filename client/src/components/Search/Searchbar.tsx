@@ -6,21 +6,17 @@ import SearchResults from "./SearchResults";
 import Input from "../../shared/Input";
 import { useAppDispatch } from '../../store'
 import { setOrigin, setDestination } from '../../reducers/itineraries'
-import { fetchAddressLookup, fetchAddressSearch, fetchJourneyPlanning, setIsloading } from "../../reducers/searchResult";
+import { fetchAddressLookup, fetchAddressSearch, setDestinationAddressSearch, setIsloading, setOriginAddressSearch } from "../../reducers/searchResult";
 import { showNotification } from "../../reducers/notification";
 
 const Searchbar = ({ isOrigin }) => {
   const dispatch = useAppDispatch();
 
   const { origin, destination } = useSelector((state: any) => state?.itinerary);
-  const { isLoading } = useSelector((state: any) => state?.searchResult?.isLoading);
-
-  const { addressSearch } = useSelector((state: any) => state?.searchResult);
 
   const originRef = useRef<HTMLInputElement | null>(null)
   const destRef = useRef<HTMLInputElement | null>(null)
 
-  const address = isOrigin ? origin : destination;
   const inputName = isOrigin ? "origin" : "destination";
   const inputLabel = isOrigin ? "Origin" : "Destination";
   const inputId = isOrigin ? "origin-input" : "destination-input";
@@ -36,43 +32,16 @@ const Searchbar = ({ isOrigin }) => {
     setInput(value);
   };
 
-  useEffect(() => {
-    if (addressSearch?.length === 0) {
-      setSearchResults([]);
+  const setValue = () => {
+    if (isOrigin) {
+      setInput(origin?.name);
     } else {
-      setSearchResults(addressSearch);
+      setInput(destination?.name);
     }
-  }, [addressSearch]);
-
-  useEffect(() => {
-    if (input?.length === 0) return setSearchResults([]);
-    if (input?.length > 2) {
-      handleFetch(input)
-    }
-  }, [input]);
-
-  useEffect(() => {
-    if (origin?.name === "" || destination?.name === "") {
-      dispatch(fetchJourneyPlanning([]));
-    }
-    if (origin?.name !== "" && destination?.name !== "") {
-      setValue();
-    }
-  }, [origin, destination]);
-
-  const handleFetch = (params: any) => {
-    if (params?.length > 2) return debounce(dispatch(fetchAddressSearch(params)), 500)
-  }
-
-  const handleFocus = () => {
-    setIsFocus(true);
-    isOrigin ? handleFetch(origin?.name) : handleFetch(destination?.name)
   };
 
   const setAddress = useCallback(
     (payload: any) => {
-      console.log(isOrigin, 'isOrigin');
-
       if (isOrigin) {
         dispatch(setOrigin(payload));
       } else {
@@ -81,14 +50,6 @@ const Searchbar = ({ isOrigin }) => {
     },
     [isOrigin],
   );
-
-  const setValue = () => {
-    if (isOrigin) {
-      setInput(origin?.name);
-    } else {
-      setInput(destination?.name);
-    }
-  };
 
   const selectResult = (result: any) => {
     const cleanupResult = {
@@ -100,7 +61,40 @@ const Searchbar = ({ isOrigin }) => {
     setValue()
   };
 
-  const handleReset = () => {
+
+  useEffect(() => {
+    (handleFetch(input))
+  }, [input]);
+
+
+  useEffect(() => {
+    if (origin?.name !== "" && destination?.name !== "") {
+      setValue();
+    }
+  }, [origin, destination]);
+
+
+  const handleFetch = async (params: any): Promise<void> => {
+    if (params?.length > 2) {
+      const res = await (dispatch(fetchAddressSearch(params)))
+      if (res) {
+        if (isOrigin) {
+          setSearchResults(res?.data?.data)
+          dispatch(setOriginAddressSearch(res?.data?.data))
+        } else {
+          setSearchResults(res?.data?.data)
+          dispatch(setDestinationAddressSearch(res?.data?.data))
+        }
+      }
+    }
+  }
+
+  const handleFocus = () => {
+    setIsFocus(true);
+    isOrigin ? handleFetch(origin?.name) : handleFetch(destination?.name)
+  };
+
+  const handleReset = (): void => {
     const searchValue = isOrigin ? origin?.name : destination?.name
     setIsFocus(true)
     setInput("");
@@ -108,7 +102,7 @@ const Searchbar = ({ isOrigin }) => {
     inputRef.current?.focus()
   };
 
-  const handleBlur = () => {
+  const handleBlur = (): void => {
     setIsFocus(false);
     isOrigin ? setInput(origin?.name) : setInput(destination?.name)
   };
@@ -134,12 +128,8 @@ const Searchbar = ({ isOrigin }) => {
 
   const onSuccess = async (position: any) => {
     const { latitude, longitude } = position?.coords;
-    console.log(latitude, longitude, 'position');
-
     try {
       const res: any = await dispatch(fetchAddressLookup(latitude, longitude));
-      console.log(res, 'res');
-
       const { labelNameArray, coordinates } = res.data?.data[0];
       setInput(labelNameArray);
       setAddress({
@@ -147,7 +137,6 @@ const Searchbar = ({ isOrigin }) => {
         lat: coordinates.lat,
         lon: coordinates.lon,
       });
-      handleFetch(labelNameArray)
     } catch (e) {
       dispatch(
         dispatch(showNotification({
@@ -155,15 +144,16 @@ const Searchbar = ({ isOrigin }) => {
           message: e,
         })),
       );
+    } finally {
+      dispatch(setIsloading(false))
     }
   };
 
   const getGeolocation = () => {
+    dispatch(setIsloading(true))
+
     if (navigator?.geolocation) {
       navigator.permissions.query({ name: "geolocation" }).then((result) => {
-
-        console.log(result, 'result');
-
         if (result.state === "granted") {
           navigator.geolocation.getCurrentPosition(onSuccess);
         } else if (result.state === "prompt") {
@@ -177,6 +167,7 @@ const Searchbar = ({ isOrigin }) => {
           );
         }
       });
+
     } else {
       return dispatch(
         showNotification({
