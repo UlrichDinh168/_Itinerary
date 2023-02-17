@@ -1,15 +1,12 @@
-
-# Demo link: https://ulrich-itinerary.herokuapp.com/
-
 # Description
 
-A simple web app that allows users to search for itineraries and public transport, stops, places in Uusimaa area of Finland.
+A simple web app ultilized [Digitransit API](https://digitransit.fi/en/developers/apis/) that allows users to search for itineraries and public transport, stops, places in Uusimaa area of Finland.
 
 # Project overview
 
-- Frontend: React, Redux
+- Frontend: React-TypeScript, Redux Toolkit for state management.
 - Backend: Node.js (Express)
-- Deployment: Heroku
+- Deployment: AWS CloudFront, Route53.
 
 # Scripts
 
