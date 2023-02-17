@@ -29,7 +29,6 @@ const Itinerary = ({ itinerary }: ItineraryProps) => {
       <div className='itineraryDetails__container'>
         {isExpand &&
           itinerary?.legs.map((leg: string, index: any) => {
-            const nextLeg = itinerary?.legs[index + 1];
             const isDestination = itinerary?.legs.length - 1;
             return (
               <ItineraryDetails

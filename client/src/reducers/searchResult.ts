@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 import { AppThunk, AppDispatch } from "store";
 const instance = axios.create({
@@ -50,6 +50,8 @@ export const { setOriginAddressSearch, setDestinationAddressSearch, setJourneyPl
 export const fetchAddressSearch = (value: any): AppThunk => async (dispatch: AppDispatch) => {
   try {
     const data = await instance.post(`/api/get-address-search`, { data: value })
+    console.log(data, 'data');
+
     return data
   } catch (error: any) {
     throw new Error(error);

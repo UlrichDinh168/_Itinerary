@@ -34,9 +34,6 @@ export const searchResultSlice = createSlice({
   name: 'searchResult',
   initialState,
   reducers: {
-    setNameSearch: (state, action) => {
-      return { ...state, nameSearch: action.payload }
-    },
     setOrigin: (state, action) => {
       return { ...state, origin: action.payload }
     },
@@ -51,4 +48,4 @@ export const searchResultSlice = createSlice({
 
 export default searchResultSlice.reducer
 
-export const { setOrigin, setDestination, setDateTime, setNameSearch } = searchResultSlice.actions
+export const { setOrigin, setDestination, setDateTime } = searchResultSlice.actions

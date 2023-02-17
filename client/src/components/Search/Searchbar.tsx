@@ -32,19 +32,16 @@ const Searchbar = ({ isOrigin }) => {
     setInput(value);
   };
 
-  const setValue = () => {
-    if (isOrigin) {
-      setInput(origin?.name);
-    } else {
-      setInput(destination?.name);
-    }
-  };
+
 
   const setAddress = useCallback(
     (payload: any) => {
       if (isOrigin) {
+        setInput(payload?.name);
         dispatch(setOrigin(payload));
+
       } else {
+        setInput(payload?.name);
         dispatch(setDestination(payload));
       }
     },
@@ -58,7 +55,6 @@ const Searchbar = ({ isOrigin }) => {
       lon: result?.coordinates?.lon,
     };
     setAddress(cleanupResult);
-    setValue()
   };
 
 
@@ -67,11 +63,11 @@ const Searchbar = ({ isOrigin }) => {
   }, [input]);
 
 
-  useEffect(() => {
-    if (origin?.name !== "" && destination?.name !== "") {
-      setValue();
-    }
-  }, [origin, destination]);
+  // useEffect(() => {
+  //   if (origin?.name !== "" && destination?.name !== "") {
+  //     setValue();
+  //   }
+  // }, [origin, destination]);
 
 
   const handleFetch = async (params: any): Promise<void> => {

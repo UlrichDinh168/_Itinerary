@@ -52,9 +52,12 @@ export const SearchArea = () => {
     };
 
     try {
-      dispatch(setIsloading(true));
       if (!hasInvalidValue(origin?.name) && !hasInvalidValue(destination?.name)) {
-        await dispatch(fetchJourneyPlanning(returnData));
+        dispatch(setIsloading(true));
+        await dispatch(fetchJourneyPlanning(returnData)).then(() => {
+          dispatch(setIsloading(false));
+
+        });
       }
       return
     } catch (err) {
@@ -64,8 +67,6 @@ export const SearchArea = () => {
           message: err,
         }),
       );
-    } finally {
-      dispatch(setIsloading(false));
     }
   };
 

@@ -40,7 +40,6 @@ exports.getAddressSearch = async (req, res) => {
 
 exports.getAddressLookup = async (req, res) => {
   const data = req.body
-  console.log(data, 'data');
   try {
     const addressLookupData = await instance.get(
       `/geocoding/v1/reverse?point.lat=${data.data.lat}&point.lon=${data.data.lon}&lang=en&size=1&layers=address`,

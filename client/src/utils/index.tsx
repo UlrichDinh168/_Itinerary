@@ -1,5 +1,4 @@
 import { MODE } from "../constants";
-import React from "react";
 
 export const isEmpty = (value: string) => {
   return !value;
