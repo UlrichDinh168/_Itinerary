@@ -33,7 +33,7 @@ exports.getAddressSearch = async (req, res) => {
       });
     }
   } catch (error) {
-    // console.log("err", error);
+    console.log("err", error);
     return res.status(400).json({ message: "Failed to fetch data" });
   }
 };
@@ -44,8 +44,6 @@ exports.getAddressLookup = async (req, res) => {
     const addressLookupData = await instance.get(
       `/geocoding/v1/reverse?point.lat=${data.data.lat}&point.lon=${data.data.lon}&lang=en&size=1&layers=address`,
     );
-    console.log(addressLookupData.data.geocoding.query, addressLookupData.data.features, 'addressLookupData');
-
 
     if (addressLookupData?.data?.features?.length === 0)
       return res.status(404).json({ message: "No results found." });
@@ -75,7 +73,7 @@ exports.getItineraryPlan = async (req, res) => {
     });
 
   } catch (error) {
-    // console.log("err", error);
+    console.log("err", error);
     return res.status(400).json({ message: "Failed to fetch location" });
   }
 };
