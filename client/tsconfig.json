@@ -5,11 +5,15 @@
     "lib": ["es5", "es6", "dom"],
     "baseUrl": "src",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["./src/*"],
+      "test-utils": ["./utils/test-utils"]
     },
     /* Modules */
     // "rootDir": "./",                                  /* Specify the root folder within your source files. */
-    // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
+    "types": [
+      "node",
+      "jest"
+    ] /* Specify type package names to be included without being referenced in a source file. */,
     "jsx": "react-jsx",
     /* Emit */
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
@@ -31,5 +35,9 @@
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "exclude": ["node_modules", ".nuxt", "dist"],
-  "include": ["src/**/*.ts", "src/utils/index.tsx"]
+  "include": [
+    "src/**/*.ts",
+    "src/utils/index.tsx",
+    "src/components/Itinerary/Itinerary.test.tsx"
+  ]
 }
