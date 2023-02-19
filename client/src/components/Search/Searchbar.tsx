@@ -1,7 +1,5 @@
 import React, { useCallback, useState, useRef, useEffect } from "react";
 import { useSelector, } from "react-redux";
-import { debounce, } from "../../utils";
-// import useOnClickOutside from "../../hooks/useOnClickOutside";
 import SearchResults from "./SearchResults";
 import Input from "../../shared/Input";
 import { useAppDispatch } from '../../store'
@@ -27,12 +25,11 @@ const Searchbar = ({ isOrigin }) => {
   const [input, setInput] = useState('');
   const [searchResults, setSearchResults] = useState([]);
 
-  const handleChange = (e: any) => {
+  const handleChange = ((e: any) => {
     const { value } = e.target;
     setInput(value);
-  };
-
-
+    handleFetch(value)
+  });
 
   const setAddress = useCallback(
     (payload: any) => {
@@ -58,19 +55,7 @@ const Searchbar = ({ isOrigin }) => {
   };
 
 
-  useEffect(() => {
-    (handleFetch(input))
-  }, [input]);
-
-
-  // useEffect(() => {
-  //   if (origin?.name !== "" && destination?.name !== "") {
-  //     setValue();
-  //   }
-  // }, [origin, destination]);
-
-
-  const handleFetch = async (params: any): Promise<void> => {
+  const handleFetch = async (params: any): Promise<any> => {
     if (params?.length > 2) {
       const res = await (dispatch(fetchAddressSearch(params)))
       if (res) {
@@ -126,7 +111,10 @@ const Searchbar = ({ isOrigin }) => {
     const { latitude, longitude } = position?.coords;
     try {
       const res: any = await dispatch(fetchAddressLookup(latitude, longitude));
+
       const { labelNameArray, coordinates } = res.data?.data[0];
+      handleFetch(labelNameArray)
+
       setInput(labelNameArray);
       setAddress({
         name: labelNameArray,

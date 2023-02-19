@@ -4,7 +4,7 @@ import React from "react";
 import moment from "moment";
 import { renderIcon, convertMinToHour, renderBandColor } from "../../utils";
 
-const ItineraryOverview = ({ itinerary }) => {
+const ItineraryOverview = ({ itinerary }: any) => {
   const { duration, endTime, fares, legs, startTime, walkDistance } = itinerary;
 
   const renderDuration = () => {
@@ -22,17 +22,17 @@ const ItineraryOverview = ({ itinerary }) => {
     );
   };
 
-  const renderTripNumber = (leg) => {
+  const renderTripNumber = (leg: any) => {
     const line = leg?.trip;
     if (line) return <span className='tripNumber'>{line.routeShortName}</span>;
     return;
   };
-  const zonesTo = legs?.map((leg) => leg?.to?.stop?.zoneId);
-  const zonesFrom = legs?.map((leg) => leg?.from?.stop?.zoneId);
+  const zonesTo = legs?.map((leg: any) => leg?.to?.stop?.zoneId);
+  const zonesFrom = legs?.map((leg: any) => leg?.from?.stop?.zoneId);
   const zones = [...zonesTo, ...zonesFrom];
 
   const renderRouteIds = () => {
-    let zoneIds = [];
+    let zoneIds: any[] = [];
 
     // [...zonesTo, ...zonesFrom];
     // const zoneIds = [...new Set([...zonesTo, ...zonesFrom])];
@@ -69,7 +69,7 @@ const ItineraryOverview = ({ itinerary }) => {
   const renderLegs = () => {
     return (
       <div className='legs'>
-        {legs.map((leg, i) => {
+        {legs.map((leg: any, i: any) => {
           const mode = leg.mode;
           return i === leg.length - 1 ? null : (
             <div

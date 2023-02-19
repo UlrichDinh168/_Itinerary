@@ -36,7 +36,7 @@ const renderTime = (startTime: string, endTime: string, duration: number) => {
   );
 };
 
-const renderModeDetail = (mode: string, props, isDestination: boolean, leg) => {
+const renderModeDetail = (mode: string, props: any, isDestination: boolean, leg: any) => {
   const name = props?.from.name;
   const code = props?.from.stop?.code;
   const distance = props?.distance;
@@ -99,7 +99,7 @@ const renderMode = (mode: string, isOrigin: boolean, isDestination: boolean) => 
   );
 };
 
-const ItineraryDetails = ({ leg, isOrigin, isDestination }) => {
+const ItineraryDetails = ({ leg, isOrigin, isDestination }: any) => {
   const { mode, ...rest } = leg;
 
   const renderLeg = () => {

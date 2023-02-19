@@ -50,11 +50,9 @@ export const { setOriginAddressSearch, setDestinationAddressSearch, setJourneyPl
 export const fetchAddressSearch = (value: any): AppThunk => async (dispatch: AppDispatch) => {
   try {
     const data = await instance.post(`/api/get-address-search`, { data: value })
-    console.log(data, 'data');
-
     return data
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error, 'error')
   }
 };
 
@@ -63,7 +61,7 @@ export const fetchAddressLookup = (lat: any, lon: any): AppThunk => async (dispa
     const data = await instance.post(`/api/get-address-lookup`, { data: { lat, lon } })
     return data
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error, 'error');
   }
 }
 
@@ -73,7 +71,7 @@ export const fetchJourneyPlanning = (value: Record<string, any>): AppThunk => as
     const data: any = await instance.post(`/api/get-itinerary-plan`, { data: value })
     if (data.length !== 0) dispatch(setJourneyPlanning(data?.data?.data))
   } catch (error: any) {
-    throw new Error(error);
+    console.log(error, 'error');
   } finally {
     dispatch(setIsloading(false))
   }

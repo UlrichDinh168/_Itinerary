@@ -11,12 +11,12 @@ exports.getAddressSearch = async (req, res) => {
   const text = req.body
   try {
     if (text.data?.length > 2) {
+      const value = text.data?.length < 5 ? text.data : text.data.slice(0, 3)
       const defaultData = await instance.get(
-        `/geocoding/v1/search?text=${text.data}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
+        `/geocoding/v1/search?text=${value}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
       );
-
       const transportData = await instance.get(
-        `/geocoding/v1/search?text=${text.data}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
+        `/geocoding/v1/search?text=${value}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
       );
 
       const combinedData = [
@@ -33,7 +33,7 @@ exports.getAddressSearch = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("err", error);
+    // console.log("err", error);
     return res.status(400).json({ message: "Failed to fetch data" });
   }
 };
@@ -75,7 +75,7 @@ exports.getItineraryPlan = async (req, res) => {
     });
 
   } catch (error) {
-    console.log("err", error);
+    // console.log("err", error);
     return res.status(400).json({ message: "Failed to fetch location" });
   }
 };
