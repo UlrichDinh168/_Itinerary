@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
-import { AppThunk, AppDispatch } from "store";
+import { AppThunk, AppDispatch } from "../store";
 const instance = axios.create({
   baseURL: "http://localhost:8000",
 });
