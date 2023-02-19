@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 import { AppThunk, AppDispatch } from "../store";
 const instance = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: "http://ec2-18-194-249-0.eu-central-1.compute.amazonaws.com:8000",
 });
 
 interface Itinerary {
