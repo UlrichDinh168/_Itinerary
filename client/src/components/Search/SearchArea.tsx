@@ -6,12 +6,11 @@ import CustomizedDateTimePicker from "../../shared/DateTimePicker";
 
 import Searchbar from "./Searchbar";
 import { hasInvalidValue, isEmpty } from "../../utils";
-import { NOTIFICATION_TYPE } from "../../constants";
+import { instance, NOTIFICATION_TYPE } from "../../constants";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { setDateTime } from "../../reducers/itineraries";
-import { fetchJourneyPlanning } from "../../reducers/searchResult";
 import { showNotification } from "../../reducers/notification";
-import { setIsloading } from '../../reducers/searchResult'
+import { setIsloading, setJourneyPlanning } from '../../reducers/searchResult'
 
 export const SearchArea = () => {
 
@@ -54,10 +53,15 @@ export const SearchArea = () => {
     try {
       if (!hasInvalidValue(origin?.name) && !hasInvalidValue(destination?.name)) {
         dispatch(setIsloading(true));
-        await dispatch(fetchJourneyPlanning(returnData)).then(() => {
-          dispatch(setIsloading(false));
+        const data = await instance.post(`/api/get-itinerary-plan`, { data: returnData })
+        dispatch(setIsloading(false));
 
-        });
+        if (data.status === 200) {
+          const journeyPlans = data.data.journeys
+          console.log(journeyPlans, 'journeyPlans');
+
+          dispatch(setJourneyPlanning(journeyPlans))
+        }
       }
       return
     } catch (err) {

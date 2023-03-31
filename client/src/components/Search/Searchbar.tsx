@@ -1,16 +1,35 @@
-import React, { useCallback, useState, useRef, useEffect } from "react";
+import React, { useCallback, useState, useRef } from "react";
 import { useSelector, } from "react-redux";
 import SearchResults from "./SearchResults";
 import Input from "../../shared/Input";
 import { useAppDispatch } from '../../store'
-import { setOrigin, setDestination } from '../../reducers/itineraries'
-import { fetchAddressLookup, fetchAddressSearch, setDestinationAddressSearch, setIsloading, setOriginAddressSearch } from "../../reducers/searchResult";
+import { setOrigin, setDestination, Itinerary } from '../../reducers/itineraries'
+import { setDestinationAddressSearch, setIsloading, setOriginAddressSearch } from "../../reducers/searchResult";
 import { showNotification } from "../../reducers/notification";
+import { instance } from '../../constants'
 
-const Searchbar = ({ isOrigin }) => {
+type SearchResult = {
+  labelNameArray: string;
+  coordinates: {
+    lat: number;
+    lon: number;
+  };
+};
+
+interface RootState {
+  itinerary: Itinerary,
+  notification: Notification,
+  searchResult: SearchResult
+}
+
+type SearchBarProps = {
+  isOrigin: boolean;
+};
+
+const Searchbar: React.FC<SearchBarProps> = ({ isOrigin }) => {
   const dispatch = useAppDispatch();
 
-  const { origin, destination } = useSelector((state: any) => state?.itinerary);
+  const { origin, destination } = useSelector((state: RootState) => (state.itinerary));
 
   const originRef = useRef<HTMLInputElement | null>(null)
   const destRef = useRef<HTMLInputElement | null>(null)
@@ -21,18 +40,12 @@ const Searchbar = ({ isOrigin }) => {
   const inputPlaceholder = isOrigin ? "Majurinkatu 3C" : "Pasila Espoo";
   const inputRef = isOrigin ? originRef : destRef
 
-  const [isFocus, setIsFocus] = useState(false);
-  const [input, setInput] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-
-  const handleChange = ((e: any) => {
-    const { value } = e.target;
-    setInput(value);
-    handleFetch(value)
-  });
+  const [isFocus, setIsFocus] = useState<boolean>(false);
+  const [input, setInput] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
 
   const setAddress = useCallback(
-    (payload: any) => {
+    (payload: any): void => {
       if (isOrigin) {
         setInput(payload?.name);
         dispatch(setOrigin(payload));
@@ -42,53 +55,65 @@ const Searchbar = ({ isOrigin }) => {
         dispatch(setDestination(payload));
       }
     },
-    [isOrigin],
+    [isOrigin, dispatch, setInput]
   );
 
-  const selectResult = (result: any) => {
+  const selectResult = useCallback((result: SearchResult): void => {
     const cleanupResult = {
       name: result?.labelNameArray,
       lat: result?.coordinates?.lat,
       lon: result?.coordinates?.lon,
     };
     setAddress(cleanupResult);
-  };
+  }, [setAddress]);
 
 
-  const handleFetch = async (params: any): Promise<any> => {
+  const handleFetch = useCallback(async (params: string): Promise<void> => {
     if (params?.length > 2) {
-      const res = await (dispatch(fetchAddressSearch(params)))
-      if (res) {
-        if (isOrigin) {
-          setSearchResults(res?.data?.data)
-          dispatch(setOriginAddressSearch(res?.data?.data))
-        } else {
-          setSearchResults(res?.data?.data)
-          dispatch(setDestinationAddressSearch(res?.data?.data))
+      try {
+        const res = await instance.post(`/api/get-address-search`, { data: params });
+        if (res.status === 200) {
+          const routes = res?.data?.routes;
+          if (isOrigin) {
+            setSearchResults(routes ?? []);
+            dispatch(setOriginAddressSearch(routes));
+          } else {
+            setSearchResults(routes ?? []);
+            dispatch(setDestinationAddressSearch(routes));
+          }
         }
+      } catch (e) {
+        dispatch(showNotification({ type: "error", message: e.message ?? "Something went wrong!" }));
       }
     }
-  }
+  }, [isOrigin, dispatch, setSearchResults]);
 
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     setIsFocus(true);
-    isOrigin ? handleFetch(origin?.name) : handleFetch(destination?.name)
-  };
+    isOrigin ? handleFetch(origin?.name) : handleFetch(destination?.name);
+  }, [isOrigin, handleFetch, origin?.name, destination?.name]);
 
-  const handleReset = (): void => {
-    const searchValue = isOrigin ? origin?.name : destination?.name
-    setIsFocus(true)
+  const handleReset = useCallback((): void => {
+    const searchValue = isOrigin ? origin?.name : destination?.name;
+    setIsFocus(true);
     setInput("");
-    searchValue.length > 2 && handleFetch(searchValue)
-    inputRef.current?.focus()
-  };
+    searchValue.length > 2 && handleFetch(searchValue);
+    inputRef.current?.focus();
+  }, [isOrigin, origin?.name, destination?.name, handleFetch, inputRef]);
 
-  const handleBlur = (): void => {
+  const handleBlur = useCallback((): void => {
     setIsFocus(false);
-    isOrigin ? setInput(origin?.name) : setInput(destination?.name)
-  };
+    isOrigin ? setInput(origin?.name) : setInput(destination?.name);
+  }, [isOrigin, origin?.name, destination?.name]);
 
-  const onError = (error: any) => {
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setInput(value);
+    handleFetch(value);
+  }, [handleFetch]);
+
+
+  const onError = (error: GeolocationPositionError) => {
     let errors = "";
     switch (error.code) {
       case error.PERMISSION_DENIED:
@@ -100,19 +125,21 @@ const Searchbar = ({ isOrigin }) => {
       case error.TIMEOUT:
         errors = "The request to get user location timed out.";
         break;
-      case error.UNKNOWN_ERROR:
+      default:
         errors = "An unknown error occurred.";
         break;
     }
     return dispatch(showNotification({ type: 'error', message: errors }));
   };
 
-  const onSuccess = async (position: any) => {
+  const onSuccess = async (position: GeolocationPosition) => {
     const { latitude, longitude } = position?.coords;
-    try {
-      const res: any = await dispatch(fetchAddressLookup(latitude, longitude));
 
-      const { labelNameArray, coordinates } = res.data?.data[0];
+    try {
+      const res = await instance.post(`/api/get-address-lookup`, { data: { latitude, longitude } })
+      console.log(res, 'res');
+
+      const { labelNameArray, coordinates } = res.data?.route[0];
       handleFetch(labelNameArray)
 
       setInput(labelNameArray);

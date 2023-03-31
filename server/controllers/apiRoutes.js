@@ -27,9 +27,9 @@ exports.getAddressSearch = async (req, res) => {
       if (combinedData.length === 0)
         return res.status(404).json({ message: "No results found!" });
 
-      return res.status(201).json({
+      return res.status(200).json({
         message: "Data fetched succesfully",
-        data: normalizeData(combinedData),
+        routes: normalizeData(combinedData),
       });
     }
   } catch (error) {
@@ -40,17 +40,18 @@ exports.getAddressSearch = async (req, res) => {
 
 exports.getAddressLookup = async (req, res) => {
   const data = req.body
+  console.log(data, 'data');
   try {
     const addressLookupData = await instance.get(
-      `/geocoding/v1/reverse?point.lat=${data.data.lat}&point.lon=${data.data.lon}&lang=en&size=1&layers=address`,
+      `/geocoding/v1/reverse?point.lat=${data.data.latitude}&point.lon=${data.data.longitude}&lang=en&size=1&layers=address`,
     );
 
     if (addressLookupData?.data?.features?.length === 0)
       return res.status(404).json({ message: "No results found." });
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: "Location fetched succesfully",
-      data: normalizeData(addressLookupData?.data?.features),
+      route: normalizeData(addressLookupData?.data?.features),
     });
   } catch (error) {
     console.log("err", error);
@@ -67,9 +68,9 @@ exports.getItineraryPlan = async (req, res) => {
     `;
 
     const itineraryPlan = await request("https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql", query)
-    res.status(201).json({
+    res.status(200).json({
       message: "Location fetched succesfully",
-      data: itineraryPlan?.plan?.itineraries,
+      journeys: itineraryPlan?.plan?.itineraries,
     });
 
   } catch (error) {

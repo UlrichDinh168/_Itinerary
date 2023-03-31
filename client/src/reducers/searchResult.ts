@@ -1,11 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import axios from "axios";
-import { AppThunk, AppDispatch } from "../store";
-const instance = axios.create({
-  baseURL: "http://ec2-18-194-249-0.eu-central-1.compute.amazonaws.com:8000",
-});
 
-interface Itinerary {
+interface SearchResult {
   originSearch: {},
   destinationSearch: {}
   journeyPlanning: string[],
@@ -16,7 +11,7 @@ const initialState = {
   destinationSearch: {},
   journeyPlanning: [],
   isLoading: false
-} as Itinerary
+} as SearchResult
 
 export const seachResultReducer = createSlice({
   name: 'searchResult',
@@ -47,35 +42,35 @@ export const seachResultReducer = createSlice({
 // Actions
 export const { setOriginAddressSearch, setDestinationAddressSearch, setJourneyPlanning, setIsloading } = seachResultReducer.actions
 
-export const fetchAddressSearch = (value: any): AppThunk => async (dispatch: AppDispatch) => {
-  try {
-    const data = await instance.post(`/api/get-address-search`, { data: value })
-    return data
-  } catch (error: any) {
-    console.log(error, 'error')
-  }
-};
+// export const fetchAddressSearch = async (value: any) => {
+//   try {
+//     const data = await instance.post(`/api/get-address-search`, { data: value })
+//     return data
+//   } catch (error: any) {
+//     console.log(error, 'error')
+//   }
+// };
 
-export const fetchAddressLookup = (lat: any, lon: any): AppThunk => async (dispatch: Function) => {
-  try {
-    const data = await instance.post(`/api/get-address-lookup`, { data: { lat, lon } })
-    return data
-  } catch (error: any) {
-    console.log(error, 'error');
-  }
-}
+// export const fetchAddressLookup = (lat: any, lon: any): AppThunk => async (dispatch: Function) => {
+//   try {
+//     const data = await instance.post(`/api/get-address-lookup`, { data: { lat, lon } })
+//     return data
+//   } catch (error: any) {
+//     console.log(error, 'error');
+//   }
+// }
 
-export const fetchJourneyPlanning = (value: Record<string, any>): AppThunk => async (dispatch: AppDispatch) => {
-  try {
-    dispatch(setIsloading(true))
-    const data: any = await instance.post(`/api/get-itinerary-plan`, { data: value })
-    if (data.length !== 0) dispatch(setJourneyPlanning(data?.data?.data))
-  } catch (error: any) {
-    console.log(error, 'error');
-  } finally {
-    dispatch(setIsloading(false))
-  }
-};
+// export const fetchJourneyPlanning = (value: Record<string, any>): AppThunk => async (dispatch: AppDispatch) => {
+//   try {
+//     dispatch(setIsloading(true))
+//     const data: any = await instance.post(`/api/get-itinerary-plan`, { data: value })
+//     if (data.length !== 0) dispatch(setJourneyPlanning(data?.data?.data))
+//   } catch (error: any) {
+//     console.log(error, 'error');
+//   } finally {
+//     dispatch(setIsloading(false))
+//   }
+// };
 
 
 export default seachResultReducer.reducer

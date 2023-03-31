@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-interface SearchResult {
+export interface Itinerary {
   origin: {
     name: string,
     lat: string,
@@ -28,10 +28,10 @@ const initialState = {
   },
   nameSearch: '',
   dateTime: '',
-} as SearchResult
+} as Itinerary
 
-export const searchResultSlice = createSlice({
-  name: 'searchResult',
+export const ItinerarytSlice = createSlice({
+  name: 'ItinerarySlice',
   initialState,
   reducers: {
     setOrigin: (state, action) => {
@@ -46,6 +46,6 @@ export const searchResultSlice = createSlice({
   },
 });
 
-export default searchResultSlice.reducer
+export default ItinerarytSlice.reducer
 
-export const { setOrigin, setDestination, setDateTime } = searchResultSlice.actions
+export const { setOrigin, setDestination, setDateTime } = ItinerarytSlice.actions
