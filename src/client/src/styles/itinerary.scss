@@ -1,0 +1,141 @@
+/** @format */
+
+.routesSummary {
+  transition: ease-out;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+}
+.itinerary {
+  cursor: pointer;
+  margin-top: 2.5rem;
+  padding: 1rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(245deg, var(--primary-color), var(--key-corner));
+  box-shadow: 8px 8px 15px var(--shadow-color);
+  .label {
+    border: 2px solid #e1e6ff;
+    border-radius: 0.2rem;
+    padding: 0.1rem 0.5rem;
+    margin: 0 0.1rem;
+  }
+  &:hover {
+    opacity: 0.9;
+    transition: ease;
+  }
+  &__duration {
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+  }
+  .itineraryDetails {
+    display: flex;
+    width: 100%;
+    margin: 1rem;
+    position: relative;
+
+    &__container {
+      margin: 1.75rem 0;
+      transition: all 0.5s ease-out;
+    }
+  }
+  .timeBox__container {
+    margin-bottom: 0.5rem;
+  }
+  //Mode box
+  .modeBox__container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    .material-icons {
+      position: absolute;
+      font-size: 2rem;
+      &.top {
+        top: -18px;
+        left: -15px;
+      }
+      &.bottom {
+        bottom: -24px;
+        left: -14px;
+      }
+      &.middle {
+        top: -23px;
+        left: -14px;
+      }
+    }
+  }
+  .modeDetails {
+    &.bottom {
+      position: absolute;
+    }
+    &__container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 1rem;
+      h3 {
+        position: absolute;
+      }
+      .destinationLabel {
+        position: absolute;
+        bottom: -35px;
+        left: 27px;
+      }
+      &--details {
+        display: flex;
+      }
+    }
+  }
+}
+.routes {
+  padding: 0 0.5rem;
+  border-radius: 0.3em;
+  background-color: #d4d4d4;
+  span {
+    margin: 0 0.2rem;
+  }
+}
+.tripDetails__container {
+  color: gray;
+  width: 35%;
+  display: flex;
+  min-width: 19rem;
+  max-width: 19rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.tripNumber {
+  border-radius: 0.3rem;
+  padding: 1px;
+  font-size: 1rem;
+}
+.legs {
+  display: flex;
+  width: auto;
+  margin: 1rem 0.1rem;
+  cursor: pointer;
+}
+.band {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.3rem;
+  padding: 0.2rem 1rem;
+  min-width: 2rem;
+  margin: 0 0.05rem;
+  &__item {
+    border-radius: 0.3rem;
+    padding: 0 3px;
+  }
+}
+
+.material-icons {
+  font-size: 1.3rem;
+}
+
+@media (max-width: 850px) {
+  .tripDetails__container {
+    min-width: 19rem;
+  }
+}
