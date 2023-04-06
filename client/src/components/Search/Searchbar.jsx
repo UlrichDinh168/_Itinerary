@@ -93,7 +93,7 @@ const Searchbar = ({ isOrigin }) => {
         dispatch(itineraryActions.setDestination(payload));
       }
     },
-    [isOrigin],
+    [isOrigin, dispatch],
   );
 
   const setValue = () => {
@@ -147,7 +147,7 @@ const Searchbar = ({ isOrigin }) => {
       case error.TIMEOUT:
         errors = "The request to get user location timed out.";
         break;
-      case error.UNKNOWN_ERROR:
+      default:
         errors = "An unknown error occurred.";
         break;
     }
