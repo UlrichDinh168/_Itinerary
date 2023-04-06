@@ -16,8 +16,7 @@
     "client-build": "npm run build --prefix client",
     "client-install": "cd client && npm install ",
     "server-install": "cd server && npm install",
-    "postinstall": "npm run client-install && npm run server-install",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "postinstall": "npm run client-install && npm run server-install"
   },
   "repository": {
     "type": "git",
