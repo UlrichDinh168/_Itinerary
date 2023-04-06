@@ -11,9 +11,16 @@ import { createLogger } from "redux-logger";
 import storage from "redux-persist/lib/storage";
 import axios from "axios";
 
-// const baseURL = "http://ec2-18-194-249-0.eu-central-1.compute.amazonaws.com:8000";
-// const baseURL = "https://ulrich-itinerary.herokuapp.com";
-const baseURL = 'http://localhost:8000'
+const isProduction = process.env.NODE_ENV === "production";
+let baseURL
+
+if (isProduction) {
+  baseURL = 'https://itinerary-ulrich.herokuapp.com/'
+} else {
+  baseURL = 'http://localhost:8000'
+}
+
+console.log(isProduction, 'isProduction');
 // Config redux-persist
 const persistConfig = {
   key: PERSIST_KEY,
@@ -30,7 +37,6 @@ const client = {
 };
 
 const middleware = [thunk, multiClientMiddleware(client)];
-const isProduction = process.env.NODE_ENV === "production";
 if (!isProduction) {
   const logger = createLogger();
   middleware.push(logger);
