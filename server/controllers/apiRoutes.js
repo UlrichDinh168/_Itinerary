@@ -5,23 +5,13 @@ const { request, gql } = require("graphql-request");
 const { BACKEND_BASE_URL } = require("../../client/src/constants.js");
 
 const instance = axios.create({
-  // baseURL: BACKEND_BASE_URL,
-  baseURL: 'http://api.digitransit.fi',
+  baseURL: 'https://api.digitransit.fi',
   headers: {
-    Accept: 'application/json, text/plain, */*',
-    'User-Agent': 'axios/0.24.0'
+    'Content-Type': 'application/json',
+    'digitransit-subscription-key': '486aab41f80e491e9068ec79e3a3f30d',
   },
 });
 
-// const name = async () => {
-
-//   const defaultData = await axios.get(
-//     `http://api.digitransit.fi/geocoding/v1/search?text=${'sello'}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
-//   );
-//   console.log(defaultData, 'defaultData');
-
-// }
-// name()
 
 exports.getAddressSearch = async (req, res) => {
   const text = req?.body.value
@@ -75,21 +65,29 @@ exports.getAddressLookup = async (req, res) => {
 
 exports.getItineraryPlan = async (req, res) => {
   try {
-    const query = gql`
+    const query = `
       ${createQuery(req.body)}
     `;
-
-    const responseData = await request(
-      "http://api.digitransit.fi/routing/v1/routers/hsl/index/graphql",
-      query,
-    );
-
+    // const value = req.body
+    // const responseData = await instance.post(
+    //   "/routing/v1/routers/hsl/index/graphql",
+    //   query,
+    // );
+    const instance = await axios({
+      method: 'post',
+      url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+      headers: {
+        'Content-Type': 'application/graphql',
+        'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
+      },
+      data: query
+    });
     res.status(201).json({
       message: "Location fetched succesfully",
-      data: responseData?.plan?.itineraries,
+      data: instance?.data?.data?.plan?.itineraries,
     });
   } catch (error) {
     console.log("err", error);
-    return res.status(400).json({ message: "Failed to fetch location" });
+    return res.status(400).json({ message: "Failed to fetch itinerary" });
   }
 };
