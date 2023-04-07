@@ -1,11 +1,11 @@
 const express = require("express");
 const { apiRoutes } = require("./routes/apiRoutes.js");
 const cors = require("cors");
-// const dotenv = require("dotenv");
+const dotenv = require("dotenv");
 const path = require("path");
 const { fileURLToPath } = require("url");
 
-// dotenv.config();
+dotenv.config();
 
 const PORT = process.env.PORT || 8000;
 // const PORT = 8000;

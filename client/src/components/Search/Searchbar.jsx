@@ -17,7 +17,8 @@ const Searchbar = ({ isOrigin }) => {
   const dispatch = useDispatch();
 
   const { origin, destination } = useSelector((state) => state?.itinerary);
-
+  const originRef = useRef(null)
+  const destRef = useRef(null)
   const { addressSearch } = useSelector((state) => state?.searchResult);
   const wrapperRef = useRef(null);
   const address = isOrigin ? origin : destination;
@@ -34,74 +35,70 @@ const Searchbar = ({ isOrigin }) => {
     const { value } = e.target;
     setInput(value);
   };
-
-  useEffect(() => {
-    if (addressSearch?.length === 0) {
-      setSearchResults([]);
-    } else {
-      setSearchResults(addressSearch);
-    }
-  }, [addressSearch]);
-
-  useEffect(() => {
-    if (input?.length === 0) return setSearchResults([]);
-
-    if (input?.length > 2) {
-      setTimeout(() => {
-        fetchSearchResults(input);
-      }, 300);
-    }
-  }, [input]);
-
-  useEffect(() => {
-    if (origin.name === "" && destination.name === "") {
-      dispatch(searchResultActions.setJourneyPlanning([]));
-    }
-    if (origin.name !== "" && destination.name !== "") {
-      setValue();
-    }
-  }, [origin, destination]);
-
-  const fetchSearchResults = async (value) => {
-    try {
-      dispatch(itineraryActions.setLoading(true));
-
-      await dispatch(searchResultActions.getAddressSearch(value));
-    } catch (err) {
-      setSearchResults([]);
-      dispatch(
-        notificationActions.showNotification({
-          type: NOTIFICATION_TYPE.warning,
-          message: err?.response?.data?.errors[0]?.message,
-        }),
-      );
-    } finally {
-      dispatch(itineraryActions.setLoading(false));
-    }
-  };
-
+  const setValue = useCallback(
+    () => {
+      if (isOrigin) {
+        setInput(origin.name);
+      } else {
+        setInput(destination.name);
+      }
+    },
+    [setInput, origin.name, destination.name, isOrigin],
+  )
+  const fetchSearchResults = useCallback(
+    async (value) => {
+      if (value.length > 2) {
+        try {
+          await dispatch(itineraryActions.setLoading(true));
+          await dispatch(searchResultActions.getAddressSearch(value)).then(() => console.log('here'));
+        } catch (err) {
+          setSearchResults([]);
+          dispatch(
+            notificationActions.showNotification({
+              type: NOTIFICATION_TYPE.warning,
+              message: err?.response?.data?.errors[0]?.message,
+            }),
+          );
+        } finally {
+          dispatch(itineraryActions.setLoading(false));
+        }
+      }
+    },
+    [dispatch],
+  )
   const handleFocus = () => {
     setFocus(true);
-    input !== "" && fetchSearchResults(input);
+    input !== "" ?? fetchSearchResults(input);
   };
 
   const setAddress = useCallback(
     (payload) => {
+      console.log(payload, 'payload');
       if (isOrigin) {
         dispatch(itineraryActions.setOrigin(payload));
+        // originRef.current.value = payload.name
       } else {
         dispatch(itineraryActions.setDestination(payload));
+        // destRef.current.value = payload.name
+
       }
     },
     [isOrigin, dispatch],
   );
 
-  const setValue = () => {
-    if (isOrigin) {
-      setInput(origin.name);
+  const handleBlur = () => {
+    setFocus(false);
+    if (!hasInvalidValue(address)) {
+      setInput(address?.name);
     } else {
-      setInput(destination.name);
+      setInput("");
+      setAddress({
+        name: "",
+        lat: 0.0,
+        lon: 0.0,
+      });
     }
+    dispatch(searchResultActions.getAddressSearch([]));
   };
 
   const selectResult = (result) => {
@@ -120,20 +117,32 @@ const Searchbar = ({ isOrigin }) => {
     setAddress({ name: "", lat: 0.0, lon: 0.0 });
   };
 
-  const handleBlur = () => {
-    setFocus(false);
-    if (!hasInvalidValue(address)) {
-      setInput(address?.name);
+  useEffect(() => {
+    if (addressSearch?.length === 0) {
+      setSearchResults([]);
     } else {
-      setInput("");
-      setAddress({
-        name: "",
-        lat: 0.0,
-        lon: 0.0,
-      });
+      setSearchResults(addressSearch);
     }
-    dispatch(searchResultActions.getAddressSearch([]));
-  };
+  }, [addressSearch]);
+
+  useEffect(() => {
+    if (input?.length === 0) return setSearchResults([]);
+    if (input?.length > 2) {
+      setTimeout(() => {
+        fetchSearchResults(input);
+      }, 300);
+    }
+  }, [input, fetchSearchResults]);
+
+  useEffect(() => {
+    if (origin.name === "" && destination.name === "") {
+      dispatch(searchResultActions.setJourneyPlanning([]));
+    }
+    if (origin.name !== "" && destination.name !== "") {
+      setValue();
+    }
+  }, [origin, destination, dispatch, setValue]);
+
 
   const onError = (error) => {
     let errors = "";
@@ -164,17 +173,14 @@ const Searchbar = ({ isOrigin }) => {
       );
       const { labelNameArray, coordinates } = res.payload?.data?.data[0];
       setInput(labelNameArray[0]);
+      console.log(input, 'input');
       setAddress({
         name: labelNameArray[0],
         lat: coordinates.lat,
         lon: coordinates.lon,
       });
     } catch (e) {
-      dispatch(
-        notificationActions.showNotification({
-          message: "Error occured",
-        }),
-      );
+      console.log(e, 'error');
     } finally {
       dispatch(itineraryActions.setLoading(false));
     }

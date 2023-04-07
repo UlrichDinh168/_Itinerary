@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 
 import thunk from "redux-thunk";
 import { rootReducer } from "./reducers";
-import { PERSIST_KEY } from "./constants.js";
+import { PERSIST_KEY } from "./constants";
 import { multiClientMiddleware } from "redux-axios-middleware";
 import { persistStore, persistReducer } from "redux-persist";
 import { createLogger } from "redux-logger";
@@ -20,7 +20,6 @@ if (isProduction) {
   baseURL = 'http://localhost:8000'
 }
 
-console.log(isProduction, 'isProduction');
 // Config redux-persist
 const persistConfig = {
   key: PERSIST_KEY,

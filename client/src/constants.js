@@ -1,17 +1,17 @@
 
-exports.BACKEND_BASE_URL = "http://ec2-52-59-206-225.eu-central-1.compute.amazonaws.com:8000";
-exports.PERSIST_KEY = "root";
+export const BACKEND_BASE_URL = "http://ec2-52-59-206-225.eu-central-1.compute.amazonaws.com:8000";
+export const PERSIST_KEY = "root";
 
-exports.NOTIFICATION_DURATION = 3000;
-exports.PRODUCTION = "PRODUCTION";
-exports.NOTIFICATION_TYPE = {
+export const NOTIFICATION_DURATION = 3000;
+export const PRODUCTION = "PRODUCTION";
+export const NOTIFICATION_TYPE = {
   success: "success",
   error: "error",
   warning: "warning",
   info: "info",
 };
 
-exports.MODE = {
+export const MODE = {
   WALK: "WALK",
   RAIL: "RAIL",
   BUS: "BUS",

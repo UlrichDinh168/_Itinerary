@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Provider } from "react-redux";
-import { store } from "./store";
+import { store } from "./store.js";
 import Container from "./components/index";
 import Snackbar from "./shared/SnackBar";
 import Helmet from "react-helmet";
