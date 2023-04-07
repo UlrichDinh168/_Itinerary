@@ -24,7 +24,7 @@
         var(--primary-color),
         var(--key-corner)
       );
-      box-shadow: inset 8px 8px 15px var(--shadow-color);
+      box-shadow: inset 8px 8px 15px 5px var(--shadow-color);
       padding: 2rem;
       border-radius: 0.3rem;
       &__form {

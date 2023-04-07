@@ -14,13 +14,12 @@
   --purple: #ad37c3;
   --green: #10de2b;
   --green-dim: #008151;
-  --light-gray: #dddddd;
+  --light-gray: #c8e1e4;
   --white: #fff;
   --primary-color: #f2f7fb;
   --key-corner: #e9f2fb;
   --shadow-color: #d9e3ec;
 }
-
 #root {
   display: flex;
   justify-content: center;
@@ -33,7 +32,6 @@ body {
 
   font-family: "Ubuntu", sans-serif;
 
-  -webkit-appearance: none;
   input[type="text" i] {
     padding: 0.5rem 3rem;
     width: 100% !important;

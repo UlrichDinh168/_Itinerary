@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from "redux";
 
 import thunk from "redux-thunk";
 import { rootReducer } from "./reducers";
-import { PERSIST_KEY } from "./constants";
+import { PERSIST_KEY, BACKEND_BASE_URL } from "./constants";
 import { multiClientMiddleware } from "redux-axios-middleware";
 import { persistStore, persistReducer } from "redux-persist";
 import { createLogger } from "redux-logger";
@@ -12,13 +12,6 @@ import storage from "redux-persist/lib/storage";
 import axios from "axios";
 
 const isProduction = process.env.NODE_ENV === "production";
-let baseURL
-
-if (isProduction) {
-  baseURL = 'https://itinerary-ulrich.herokuapp.com/'
-} else {
-  baseURL = 'http://localhost:8000'
-}
 
 // Config redux-persist
 const persistConfig = {
@@ -29,7 +22,7 @@ const persistConfig = {
 const client = {
   default: {
     client: axios.create({
-      baseURL: baseURL,
+      baseURL: isProduction ? BACKEND_BASE_URL : 'http://localhost:8000',
       responseType: "json",
     }),
   },

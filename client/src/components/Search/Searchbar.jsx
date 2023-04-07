@@ -73,7 +73,6 @@ const Searchbar = ({ isOrigin }) => {
 
   const setAddress = useCallback(
     (payload) => {
-      console.log(payload, 'payload');
       if (isOrigin) {
         dispatch(itineraryActions.setOrigin(payload));
         // originRef.current.value = payload.name
@@ -173,7 +172,6 @@ const Searchbar = ({ isOrigin }) => {
       );
       const { labelNameArray, coordinates } = res.payload?.data?.data[0];
       setInput(labelNameArray[0]);
-      console.log(input, 'input');
       setAddress({
         name: labelNameArray[0],
         lat: coordinates.lat,

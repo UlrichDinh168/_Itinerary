@@ -1,16 +1,16 @@
 const { normalizeData, createQuery } = require("../utils/index.js");
+const { API_URL } = require("../constants.js")
 const axios = require('axios')
 const { replaceNonASCII } = require("../utils/index.js");
 
 const instance = axios.create({
-  baseURL: 'https://api.digitransit.fi',
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
     'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
   },
 });
 
-// REACT_APP_HSL_KEY 486aab41f80e491e9068ec79e3a3f30d
 exports.getAddressSearch = async (req, res) => {
 
 
@@ -73,7 +73,7 @@ exports.getItineraryPlan = async (req, res) => {
 
     const instance = await axios({
       method: 'post',
-      url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+      url: `${API_URL}/routing/v1/routers/hsl/index/graphql`,
       headers: {
         'Content-Type': 'application/graphql',
         'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
@@ -81,7 +81,6 @@ exports.getItineraryPlan = async (req, res) => {
       data: query
     });
 
-    console.log(instance?.data?.data?.plan?.itineraries, 'instance');
     res.status(201).json({
       message: "Location fetched succesfully",
       data: instance?.data?.data?.plan?.itineraries,
