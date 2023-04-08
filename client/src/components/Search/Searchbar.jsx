@@ -50,7 +50,7 @@ const Searchbar = ({ isOrigin }) => {
       if (value.length > 2) {
         try {
           await dispatch(itineraryActions.setLoading(true));
-          await dispatch(searchResultActions.getAddressSearch(value)).then(() => console.log('here'));
+          await dispatch(searchResultActions.getAddressSearch(value));
         } catch (err) {
           setSearchResults([]);
           dispatch(
