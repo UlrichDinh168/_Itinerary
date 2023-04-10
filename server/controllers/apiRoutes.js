@@ -2,6 +2,7 @@ const { normalizeData, createQuery } = require("../utils/index.js");
 const { API_URL } = require("../constants.js")
 const axios = require('axios')
 const { replaceNonASCII } = require("../utils/index.js");
+require('dotenv').config()
 
 const instance = axios.create({
   baseURL: API_URL,
@@ -12,8 +13,6 @@ const instance = axios.create({
 });
 
 exports.getAddressSearch = async (req, res) => {
-
-
   try {
     const text = req?.body?.value
     const removedNonASCII = replaceNonASCII(text)

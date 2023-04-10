@@ -1,17 +1,15 @@
 /** @format */
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
-import CustomizedDateTimePicker from "../../shared/DateTimePicker";
+import MaterialUIPickers from "../../shared/DateTimePicker";
 import {
   itineraryActions,
-  notificationActions,
   searchResultActions,
 } from "../../actions";
 import Searchbar from "./Searchbar";
 import { hasInvalidValue } from "../../utils";
-import { NOTIFICATION_TYPE } from "../../constants";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 
 export const SearchArea = () => {
@@ -24,24 +22,7 @@ export const SearchArea = () => {
   const currentTime = moment().format("HH:mm:ss");
 
   const { dateTime, destination, origin } = itinerary;
-
-  React.useEffect(() => {
-    handleSearch(origin, destination, dateTime);
-  }, [dateTime, destination, origin]);
-
-  const isEmpty = (value) => {
-    return !value;
-  };
-
-  const handleSetDateTime = (value) => {
-    dispatch(itineraryActions.setDateTime(value));
-  };
-
-  const setCurrentTime = () => {
-    dispatch(itineraryActions.setDateTime(defaultDateTime));
-  };
-
-  const handleSearch = async (origin, destination, dateTime) => {
+  const handleSearch = useCallback(async (origin, destination, dateTime) => {
     const date = moment(dateTime).format("YYYYMMDD");
     const time = moment(dateTime).format("HH:mm:ss");
     const returnData = {
@@ -62,16 +43,29 @@ export const SearchArea = () => {
         await dispatch(searchResultActions.getJourneyPlanning(returnData));
       }
     } catch (err) {
-      dispatch(
-        notificationActions.showNotification({
-          type: NOTIFICATION_TYPE.warning,
-          message: err?.response?.data?.errors[0]?.message,
-        }),
-      );
+      console.log(err);
     } finally {
       dispatch(itineraryActions.setLoading(false));
     }
+  }, [currentDate, currentTime, dispatch]);
+
+
+  React.useEffect(() => {
+    handleSearch(origin, destination, dateTime);
+  }, [dateTime, destination, origin]);
+
+  const isEmpty = (value) => {
+    return !value;
   };
+
+  const handleSetDateTime = (value) => {
+    dispatch(itineraryActions.setDateTime(value));
+  };
+
+  const setCurrentTime = () => {
+    dispatch(itineraryActions.setDateTime(defaultDateTime));
+  };
+
 
   return (
     <div className='searchArea'>
@@ -81,7 +75,7 @@ export const SearchArea = () => {
           <Searchbar isOrigin={false} />
         </div>
         <div className='searchArea__dateTime'>
-          <CustomizedDateTimePicker
+          <MaterialUIPickers
             value={dateTime !== "" ? dateTime : defaultDateTime}
             onChange={handleSetDateTime}
           />
