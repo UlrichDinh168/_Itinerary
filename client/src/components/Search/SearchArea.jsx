@@ -52,7 +52,7 @@ export const SearchArea = () => {
 
   React.useEffect(() => {
     handleSearch(origin, destination, dateTime);
-  }, [dateTime, destination, origin]);
+  }, [dateTime, destination, origin,]);
 
   const isEmpty = (value) => {
     return !value;

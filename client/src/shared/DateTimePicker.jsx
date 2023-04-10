@@ -7,7 +7,6 @@ import TextField from '@mui/material/TextField';
 
 
 export default function MaterialUIPickers({ value, onChange }) {
-  console.log(value, 'valuie');
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Stack spacing={3}>

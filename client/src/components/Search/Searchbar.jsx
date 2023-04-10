@@ -20,12 +20,13 @@ const Searchbar = ({ isOrigin }) => {
   const originRef = useRef(null)
   const destRef = useRef(null)
   const { addressSearch } = useSelector((state) => state?.searchResult);
-  const wrapperRef = useRef(null);
   const address = isOrigin ? origin : destination;
   const inputName = isOrigin ? "origin" : "destination";
   const inputLabel = isOrigin ? "Origin" : "Destination";
   const inputId = isOrigin ? "origin-input" : "destination-input";
   const inputPlaceholder = isOrigin ? "Majurinkatu 3C" : "Pasila Espoo";
+
+  const inputRef = isOrigin ? originRef : destRef
 
   const [isFocus, setFocus] = useState(false);
   const [input, setInput] = useState("");
@@ -66,20 +67,18 @@ const Searchbar = ({ isOrigin }) => {
     },
     [dispatch],
   )
-  const handleFocus = () => {
+  const handleFocus = useCallback(() => {
     setFocus(true);
-    input !== "" ?? fetchSearchResults(input);
-  };
+    isOrigin ? fetchSearchResults(origin?.name) : fetchSearchResults(destination?.name);
+
+  }, [isOrigin, origin.name, destination.name, setFocus, fetchSearchResults]);
 
   const setAddress = useCallback(
     (payload) => {
       if (isOrigin) {
         dispatch(itineraryActions.setOrigin(payload));
-        // originRef.current.value = payload.name
       } else {
         dispatch(itineraryActions.setDestination(payload));
-        // destRef.current.value = payload.name
-
       }
     },
     [isOrigin, dispatch],
@@ -111,10 +110,13 @@ const Searchbar = ({ isOrigin }) => {
     setFocus(false);
   };
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setInput("");
+    setFocus(true);
+    inputRef.current?.focus();
+
     setAddress({ name: "", lat: 0.0, lon: 0.0 });
-  };
+  }, [inputRef, setAddress]);
 
   useEffect(() => {
     if (addressSearch?.length === 0) {
@@ -165,7 +167,7 @@ const Searchbar = ({ isOrigin }) => {
   const onSuccess = async (pos) => {
     const { latitude, longitude } = pos?.coords;
     try {
-      dispatch(itineraryActions.setLoading(true));
+      await dispatch(itineraryActions.setLoading(true));
 
       const res = await dispatch(
         searchResultActions.getAddressLookup(latitude, longitude),
@@ -214,7 +216,7 @@ const Searchbar = ({ isOrigin }) => {
         id={inputId}
         label={inputLabel}
         placeholder={inputPlaceholder}
-        reference={[wrapperRef]}
+        reference={inputRef}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
