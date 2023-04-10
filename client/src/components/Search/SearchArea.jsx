@@ -16,14 +16,16 @@ export const SearchArea = () => {
 
   const dispatch = useDispatch();
   const itinerary = useSelector((state) => state.itinerary);
-  const defaultDateTime = moment().toLocaleString();
+  const defaultDateTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-  const currentDate = moment().format("YYYYMMDD");
+  const currentDate = moment().format("YYYY-MM-DD");
   const currentTime = moment().format("HH:mm:ss");
 
   const { dateTime, destination, origin } = itinerary;
+
   const handleSearch = useCallback(async (origin, destination, dateTime) => {
-    const date = moment(dateTime).format("YYYYMMDD");
+
+    const date = moment(dateTime).format("YYYY-MM-DD");
     const time = moment(dateTime).format("HH:mm:ss");
     const returnData = {
       origin: {
@@ -59,13 +61,12 @@ export const SearchArea = () => {
   };
 
   const handleSetDateTime = (value) => {
-    dispatch(itineraryActions.setDateTime(value));
+    dispatch(itineraryActions.setDateTime(value.$d));
   };
 
   const setCurrentTime = () => {
     dispatch(itineraryActions.setDateTime(defaultDateTime));
   };
-
 
   return (
     <div className='searchArea'>
