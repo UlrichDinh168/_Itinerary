@@ -1,30 +1,31 @@
 const { normalizeData, createQuery } = require("../utils/index.js");
-// const fetch = require("node-fetch");
+const { API_URL } = require("../constants.js")
 const axios = require('axios')
-const { request, gql } = require("graphql-request");
-const { BACKEND_BASE_URL } = require("../../client/src/constants.js");
+const { replaceNonASCII } = require("../utils/index.js");
+require('dotenv').config()
 
 const instance = axios.create({
-  baseURL: 'https://api.digitransit.fi',
+  baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
-    'digitransit-subscription-key': '486aab41f80e491e9068ec79e3a3f30d',
+    'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
   },
 });
 
-
 exports.getAddressSearch = async (req, res) => {
-  const text = req?.body.value
-  console.log(text, 'text');
   try {
-    if (text.length > 2) {
+    const text = req?.body?.value
+    const removedNonASCII = replaceNonASCII(text)
 
+    if (text.length < 2) return
+
+    if (text.length > 2) {
       const defaultData = await instance.get(
-        `/geocoding/v1/search?text=${text}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
+        `/geocoding/v1/search?text=${removedNonASCII}&lang=en&sources=oa%2Cosm%2Cnlsfi`,
       );
 
       const transportData = await instance.get(
-        `/geocoding/v1/search?text=${text}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
+        `/geocoding/v1/search?text=${removedNonASCII}&lang=en&sources=gtfsHSL%2CgtfsHSLlautta`,
       );
 
       const combinedData = [
@@ -48,14 +49,14 @@ exports.getAddressLookup = async (req, res) => {
   const { lat, lon } = req?.body
   try {
     const data = await instance.get(
-      `/geocoding/v1/reverse?point.lat=${lat}&point.lon=${lon}&lang=en&size=1&layers=address`,
+      `/geocoding/v1/reverse?point.lat=${lat}&point.lon=${lon}&lang=fi&size=1&layers=address`,
     );
-    const json = await data.json();
-    if (json?.features?.length === 0)
+    const resp = await data?.data?.features
+    if (resp.length === 0)
       return res.status(404).json({ message: "No results found." });
     return res.status(201).json({
       message: "Location fetched succesfully",
-      data: normalizeData(json?.features),
+      data: normalizeData(resp),
     });
   } catch (error) {
     console.log("err", error);
@@ -68,20 +69,17 @@ exports.getItineraryPlan = async (req, res) => {
     const query = `
       ${createQuery(req.body)}
     `;
-    // const value = req.body
-    // const responseData = await instance.post(
-    //   "/routing/v1/routers/hsl/index/graphql",
-    //   query,
-    // );
+
     const instance = await axios({
       method: 'post',
-      url: 'https://api.digitransit.fi/routing/v1/routers/hsl/index/graphql',
+      url: `${API_URL}/routing/v1/routers/hsl/index/graphql`,
       headers: {
         'Content-Type': 'application/graphql',
         'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
       },
       data: query
     });
+
     res.status(201).json({
       message: "Location fetched succesfully",
       data: instance?.data?.data?.plan?.itineraries,

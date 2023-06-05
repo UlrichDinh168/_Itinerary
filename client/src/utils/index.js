@@ -30,7 +30,7 @@ export const hasInvalidValue = (value) => {
 };
 
 export const renderBandColor = (mode) => {
-  let color = "";
+  let color;
   switch (mode) {
     case MODE.BUS:
       return (color = "#007ac9");

@@ -18,7 +18,7 @@ const Input = ({
   handleClickInputIcon,
 }) => {
   return (
-    <div className='input__wrapper' ref={reference[1]}>
+    <div className='input__wrapper' >
       <TextField
         type='text'
         label={label}
@@ -27,7 +27,7 @@ const Input = ({
         placeholder={placeholder}
         onChange={onChange}
         size='small'
-        inputRef={reference[0]}
+        inputRef={reference}
         id={id}
         sx={{ m: 1, width: "39.5ch" }}
         onFocus={onFocus}

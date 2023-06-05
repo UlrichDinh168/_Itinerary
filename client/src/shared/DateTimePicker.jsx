@@ -4,21 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import TextField from '@mui/material/TextField';
-
-
-// const CustomizedDateTimePicker = ({ value, onChange }) => {
-//   return (
-//     <LocalizationProvider dateAdapter={AdapterDateFns}>
-//       <MobileDateTimePicker
-//         renderInput={(props) => <TextField {...props} />}
-//         label='DateTimePicker'
-//         value={value}
-//         disablePast
-//         onChange={onChange}
-//       />
-//     </LocalizationProvider>
-//   );
-// };
+import dayjs from 'dayjs';
 
 
 export default function MaterialUIPickers({ value, onChange }) {
@@ -27,7 +13,7 @@ export default function MaterialUIPickers({ value, onChange }) {
       <Stack spacing={3}>
         <DateTimePicker
           label="Date Time picker"
-          value={value}
+          value={dayjs(value)}
           onChange={onChange}
           disablePast
           renderInput={(params) => <TextField {...params} />}

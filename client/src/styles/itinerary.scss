@@ -11,8 +11,12 @@
   margin-top: 2.5rem;
   padding: 1rem;
   border-radius: 0.4rem;
-  background: linear-gradient(245deg, var(--primary-color), var(--key-corner));
-  box-shadow: 8px 8px 15px var(--shadow-color);
+  background: linear-gradient(
+    245deg,
+    var(--primary-color),
+    var(--key-corner)
+  );
+  box-shadow: 8px 8px 15px 8px var(--shadow-color);
   .label {
     border: 2px solid #e1e6ff;
     border-radius: 0.2rem;
@@ -52,14 +56,14 @@
       font-size: 2rem;
       &.top {
         top: -18px;
-        left: -15px;
+        left: -14px;
       }
       &.bottom {
         bottom: -24px;
         left: -14px;
       }
       &.middle {
-        top: -23px;
+        top: -24px;
         left: -14px;
       }
     }

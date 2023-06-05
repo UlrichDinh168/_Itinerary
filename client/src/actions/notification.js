@@ -1,9 +1,10 @@
 import { notificationTypes as types } from "./types";
-import { NOTIFICATION_TYPE, NOTIFICATION_DURATION } from "../constants";
-const showNotification = (message) => {
+import { NOTIFICATION_DURATION } from "../constants";
+
+const showNotification = (message, type) => {
   let defaultMessage = {
-    type: NOTIFICATION_TYPE.success,
-    message: "Message",
+    type,
+    message: "Something went wrong",
     duration: NOTIFICATION_DURATION,
   };
   return {
@@ -11,7 +12,7 @@ const showNotification = (message) => {
     notification: { ...defaultMessage, ...message },
   };
 };
-const resetNotification = (message) => {
+const resetNotification = () => {
   return {
     type: types.resetNotification,
   };
