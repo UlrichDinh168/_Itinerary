@@ -1,5 +1,6 @@
 import { notificationTypes as types } from "./types";
 import { NOTIFICATION_TYPE, NOTIFICATION_DURATION } from "../constants";
+
 const showNotification = (message) => {
   let defaultMessage = {
     type: NOTIFICATION_TYPE.success,

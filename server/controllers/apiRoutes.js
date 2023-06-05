@@ -3,12 +3,14 @@ const { normalizeData, createQuery } = require("../utils/index.js");
 const axios = require('axios')
 const { request, gql } = require("graphql-request");
 const { BACKEND_BASE_URL } = require("../../client/src/constants.js");
+const dotenv = require('dotenv')
+dotenv.config()
 
 const instance = axios.create({
   baseURL: 'https://api.digitransit.fi',
   headers: {
     'Content-Type': 'application/json',
-    'digitransit-subscription-key': '486aab41f80e491e9068ec79e3a3f30d',
+    'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
   },
 });
 

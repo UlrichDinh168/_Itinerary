@@ -10,6 +10,8 @@ const Itineraries = () => {
   );
   const { origin, destination } = useSelector((state) => state?.itinerary);
 
+  console.log(itineraries, 'itineraries');
+
   const [updatedItineraries, setUpdatedItineraries] =
     React.useState(itineraries);
 
