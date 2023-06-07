@@ -11,7 +11,6 @@ const App = () => {
     <Provider store={store}>
       <Helmet titleTemplate="Itinerary" defaultTitle="Itinerary">
         <meta
-          http-equiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
       </Helmet>

@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { itineraryActions } from "../../actions";
 
 const Itinerary = ({ itinerary }) => {
+  const { legs } = useSelector(state => state?.itinerary?.itinerary) || []
+
   const [isExpand, setIsExpand] = React.useState(false);
   const wrapperRef = React.useRef(null);
   const dispatch = useDispatch();
@@ -24,7 +26,7 @@ const Itinerary = ({ itinerary }) => {
       setIsExpand(true);
       dispatch(itineraryActions.setSelectedItinerary(itinerary))
     },
-    [],
+    [legs]
   )
 
 

@@ -11,7 +11,7 @@ const initialState = {
     lat: "",
     lon: "",
   },
-  itinerary: null,
+  itinerary: [],
   dateTime: "",
   loading: false,
 };

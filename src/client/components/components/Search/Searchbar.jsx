@@ -17,9 +17,12 @@ const Searchbar = ({ isOrigin }) => {
   const dispatch = useDispatch();
 
   const { origin, destination } = useSelector((state) => state?.itinerary);
+  const journeyPlanning = useSelector((state) => state?.searchResult.journeyPlanning);
+  const { addressSearch } = useSelector((state) => state?.searchResult);
+
   const originRef = useRef(null)
   const destRef = useRef(null)
-  const { addressSearch } = useSelector((state) => state?.searchResult);
+
   const address = isOrigin ? origin : destination;
   const inputName = isOrigin ? "origin" : "destination";
   const inputLabel = isOrigin ? "Origin" : "Destination";
@@ -140,9 +143,12 @@ const Searchbar = ({ isOrigin }) => {
       dispatch(searchResultActions.setJourneyPlanning([]));
     }
     if (origin.name !== "" && destination.name !== "") {
+
+      dispatch(itineraryActions.setSelectedItinerary(journeyPlanning[0]))
       setValue();
     }
   }, [origin, destination, dispatch, setValue]);
+
 
 
   const onError = (error) => {

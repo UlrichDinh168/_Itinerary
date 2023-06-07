@@ -40,7 +40,7 @@ export const SearchArea = () => {
       time: isEmpty(dateTime) ? currentTime : time,
     };
     try {
-      dispatch(itineraryActions.setLoading(true));
+      await dispatch(itineraryActions.setLoading(true));
       if (!hasInvalidValue(origin) && !hasInvalidValue(destination)) {
         await dispatch(searchResultActions.getJourneyPlanning(returnData));
       }
