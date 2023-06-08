@@ -11,10 +11,26 @@
   }
 
   &__layout {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 830px;
+
+    &-left {
+      width: 30%;
+      overflow: auto;
+    }
+    &-right {
+      width: 100%;
+      margin-left: 1rem;
+      flex: 1;
+      // height: 800px;
+      overflow: hidden;
+    }
     h1 {
       text-align: center;
     }
-    margin: 2rem;
+    // margin: 2rem;
   }
 
   &__content {
@@ -25,13 +41,14 @@
         var(--key-corner)
       );
       box-shadow: inset 8px 8px 15px 5px var(--shadow-color);
-      padding: 2rem;
+      padding: 0.5rem;
       border-radius: 0.3rem;
       &__form {
         width: 100%;
         &--container {
           width: 100%;
           display: flex;
+          flex-direction: column;
           justify-content: space-between;
           position: relative;
           z-index: 1;
