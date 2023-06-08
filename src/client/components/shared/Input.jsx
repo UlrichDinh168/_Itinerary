@@ -1,8 +1,8 @@
 /** @format */
 
-import React from "react";
-import TextField from "@mui/material/TextField";
-import ClearIcon from "@mui/icons-material/Clear";
+import React from 'react';
+import TextField from '@mui/material/TextField';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const Input = ({
   label,
@@ -18,23 +18,23 @@ const Input = ({
   handleClickInputIcon,
 }) => {
   return (
-    <div className='input__wrapper' >
+    <div className="input__wrapper">
       <TextField
-        type='text'
+        type="text"
         label={label}
         value={value}
         name={name}
         placeholder={placeholder}
         onChange={onChange}
-        size='small'
+        size="small"
         inputRef={reference}
         id={id}
-        sx={{ m: 1, width: "39.5ch" }}
+        sx={{ m: 1, width: '39.5ch' }}
         onFocus={onFocus}
         onBlur={onBlur}
       />
       {!focus && (
-        <div className='input__wrapper--clear' onClick={handleClickInputIcon}>
+        <div className="input__wrapper--clear" onClick={handleClickInputIcon}>
           <ClearIcon />
         </div>
       )}

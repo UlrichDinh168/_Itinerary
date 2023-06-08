@@ -1,9 +1,9 @@
-import { MODE } from "../constants";
+import { MODE } from '../constants';
 
 export const simplifyResJson = (json) => {
   return json.map((item) => {
     const id = item?.properties?.id;
-    const labelArray = item?.properties?.label.split(", ");
+    const labelArray = item?.properties?.label.split(', ');
     return {
       id,
       labelArray,
@@ -20,11 +20,11 @@ export const hasInvalidValue = (value) => {
   return (
     value === null || // check for null
     value === undefined || // check for undefined
-    value === "" || // check for empty string
+    value === '' || // check for empty string
     (Array.isArray(value) && value.length === 0) || // check for empty array
-    (typeof value === "object" &&
+    (typeof value === 'object' &&
       Object.values(value).some(
-        (item) => item === "" || item === null || item === undefined,
+        (item) => item === '' || item === null || item === undefined
       )) // check for empty object
   );
 };
@@ -33,37 +33,37 @@ export const renderBandColor = (mode) => {
   let color;
   switch (mode) {
     case MODE.BUS:
-      return (color = "#007ac9");
+      return (color = '#007ac9');
     case MODE.TRAM:
-      return (color = "green");
+      return (color = 'green');
     case MODE.RAIL:
-      return (color = "#8c4799");
+      return (color = '#8c4799');
     case MODE.SUBWAY:
-      return (color = "rgb(255 72 0");
+      return (color = 'rgb(255 72 0');
     default:
-      return (color = "#ddd");
+      return (color = '#ddd');
   }
 };
 
 export const renderIcon = (mode) => {
-  let icon = "";
+  let icon = '';
   switch (mode) {
     case MODE.BUS:
-      icon = "directions_bus";
+      icon = 'directions_bus';
       break;
     case MODE.TRAM:
-      icon = "tram";
+      icon = 'tram';
       break;
     case MODE.RAIL:
-      icon = "train";
+      icon = 'train';
       break;
     case MODE.SUBWAY:
-      icon = "directions_subway";
+      icon = 'directions_subway';
       break;
     default:
-      icon = "directions_walk";
+      icon = 'directions_walk';
   }
-  return <span className='material-icons'>{icon}</span>;
+  return <span className="material-icons">{icon}</span>;
 };
 
 export const convertMinToHour = (time) => {

@@ -1,8 +1,8 @@
 /** @format */
 
-import React from "react";
-import { css } from "@emotion/react";
-import PuffLoader from "react-spinners/PuffLoader";
+import React from 'react';
+import { css } from '@emotion/react';
+import PuffLoader from 'react-spinners/PuffLoader';
 const override = css`
   display: block;
   margin: 0 auto;
@@ -12,7 +12,7 @@ const override = css`
 const Loading = () => {
   return (
     <div>
-      <PuffLoader css={override} size={100} color='#2C6CAF' />
+      <PuffLoader css={override} size={100} color="#2C6CAF" />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 /** @format */
 
-import { seachResultTypes as types } from "../actions/types";
+import { seachResultTypes as types } from '../actions/types';
 const initialState = {
   addressSearch: null,
   journeyPlanning: [],

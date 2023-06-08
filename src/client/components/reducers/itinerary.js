@@ -1,18 +1,18 @@
 /** @format */
-import { itineraryTypes as types } from "../actions/types";
+import { itineraryTypes as types } from '../actions/types';
 const initialState = {
   origin: {
-    name: "",
-    lat: "",
-    lon: "",
+    name: '',
+    lat: '',
+    lon: '',
   },
   destination: {
-    name: "",
-    lat: "",
-    lon: "",
+    name: '',
+    lat: '',
+    lon: '',
   },
   itinerary: [],
-  dateTime: "",
+  dateTime: '',
   loading: false,
 };
 

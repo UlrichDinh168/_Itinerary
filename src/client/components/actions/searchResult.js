@@ -1,6 +1,6 @@
 /** @format */
 
-import { seachResultTypes as types } from "./types";
+import { seachResultTypes as types } from './types';
 
 export const setDefaultResult = (payload) => {
   return {
@@ -21,7 +21,7 @@ export const getAddressLookup = (lat, lon) => {
     type: types.getAddressLookupResult,
     payload: {
       request: {
-        method: "POST",
+        method: 'POST',
         url: `/api/get-address-lookup`,
         data: { lat, lon },
       },
@@ -33,8 +33,8 @@ export const getAddressSearch = (value) => {
     type: types.getAddressSearch,
     payload: {
       request: {
-        header: { "Content-Type": "application/json" },
-        method: "POST",
+        header: { 'Content-Type': 'application/json' },
+        method: 'POST',
         url: `/api/get-address-search`,
         data: { value },
       },
@@ -47,7 +47,7 @@ export const getJourneyPlanning = (value) => {
     type: types.getJourneyPlanning,
     payload: {
       request: {
-        method: "POST",
+        method: 'POST',
         url: `/api/get-itinerary-plan`,
         data: value,
       },

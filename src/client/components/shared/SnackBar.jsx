@@ -1,15 +1,15 @@
 /** @format */
 
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 // actions
-import { notificationActions } from "../actions";
+import { notificationActions } from '../actions';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />;
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 export default function SimpleSnackbar() {
@@ -23,7 +23,7 @@ export default function SimpleSnackbar() {
   }, [notification]);
 
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
     dispatch(notificationActions.resetNotification());
@@ -35,7 +35,7 @@ export default function SimpleSnackbar() {
 
   const { message, duration, type } = notification;
   return (
-    <div className='snackbar'>
+    <div className="snackbar">
       <Snackbar open={open} autoHideDuration={duration} onClose={handleClose}>
         <div>
           <Alert onClose={handleClose} severity={type}>

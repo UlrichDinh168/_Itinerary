@@ -1,6 +1,6 @@
 /** @format */
 
-import { itineraryTypes as types } from "./types";
+import { itineraryTypes as types } from './types';
 
 export const setOrigin = (payload) => {
   return {
@@ -58,4 +58,3 @@ export const setSelectedItinerary = (payload) => {
     payload,
   };
 };
-

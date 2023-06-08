@@ -1,13 +1,13 @@
 /** @format */
 
-import { notificationTypes as types } from "../actions/types";
-import { NOTIFICATION_TYPE, NOTIFICATION_DURATION } from "../constants";
+import { notificationTypes as types } from '../actions/types';
+import { NOTIFICATION_TYPE, NOTIFICATION_DURATION } from '../constants';
 const initialState = {
   notification: null,
 };
 
 export const notificationReducer = (state = initialState, action) => {
-  if (action.type.endsWith("_FAIL")) {
+  if (action.type.endsWith('_FAIL')) {
     return {
       ...state,
       notification: {

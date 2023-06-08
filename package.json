@@ -2,17 +2,17 @@
   "name": "vite-react-express-boilerplate",
   "version": "0.0.0",
   "scripts": {
+    "start": "node dist/server.js",
     "clean": "rimraf dist",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
     "client:dev": "vite",
     "server:dev": "nodemon src/server.js",
-    "server:build": "babel --verbose --out-dir dist --only 'src/server.js,src/lib/' src",
+    "server:build": "babel --verbose --out-dir dist --only 'src/server.js,src/server/' src",
     "client:build": "vite build",
     "build": "npm run server:build && npm run client:build",
     "serve": "vite preview",
     "prepare": "husky install",
-    "test": "prettier --check . && eslint . && stylelint \"**/*.css\"",
-    "start": "node dist/server.js"
+    "lint": "prettier --write . && eslint . && stylelint \"**/*.css\""
   },
   "devDependencies": {
     "@babel/cli": "^7.15.7",

@@ -4,8 +4,8 @@ export const setupQuery = (value) => {
   return `
     {
       plan(
-        from: {lat: ${value.origin["lat"]}, lon: ${value.origin["lon"]}},
-        to: {lat: ${value.destination["lat"]}, lon: ${value.destination["lon"]}},
+        from: {lat: ${value.origin['lat']}, lon: ${value.origin['lon']}},
+        to: {lat: ${value.destination['lat']}, lon: ${value.destination['lon']}},
         numItineraries: 5,
         date: "${value.date}",
         time: "${value.time}",

@@ -1,7 +1,7 @@
 /** @format */
 
-import React from "react";
-import GpsFixedIcon from "@mui/icons-material/GpsFixed";
+import React from 'react';
+import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 
 const SearchResults = ({
   isOrigin,
@@ -18,21 +18,24 @@ const SearchResults = ({
         const [main, ...secondary] = result.labelNameArray;
         return (
           <li
-            className='address'
+            className="address"
             onMouseDown={() => selectResult(result)}
-            key={result.id}>
-            <span className='address__main'>{main}</span>
-            <span className='address__secondary'>{secondary[0]} {secondary[1]}</span>
+            key={result.id}
+          >
+            <span className="address__main">{main}</span>
+            <span className="address__secondary">
+              {secondary[0]} {secondary[1]}
+            </span>
           </li>
         );
       });
   };
 
-  const key = isOrigin ? "origin" : "destination";
+  const key = isOrigin ? 'origin' : 'destination';
 
   return (
-    <ul className='result__list' id={inputId}>
-      <li className='location' onMouseDown={getGeolocation} key={key}>
+    <ul className="result__list" id={inputId}>
+      <li className="location" onMouseDown={getGeolocation} key={key}>
         <GpsFixedIcon />
         <span> Use Your Current Location</span>
       </li>

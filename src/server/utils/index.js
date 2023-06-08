@@ -1,8 +1,8 @@
 /** @format */
 exports.replaceNonASCII = (str) => {
-  if (typeof str !== 'string') return
+  if (typeof str !== 'string') return;
   // Replace non-ASCII characters with their ASCII equivalents
-  return str.replace(/[^\x00-\x7F]/g, function (char) {
+  return str.replace('/[^\x00-\x7F]/g', function (char) {
     switch (char.charCodeAt(0)) {
       case 8211:
         return '-';
@@ -23,12 +23,12 @@ exports.replaceNonASCII = (str) => {
         return char.normalize('NFKD').replace(/[\u0300-\u036F]/g, '');
     }
   });
-}
+};
 
 exports.normalizeData = (json) => {
   return json.map((item) => {
     const id = item?.properties?.id;
-    const labelNameArray = item?.properties?.label.split(", ");
+    const labelNameArray = item?.properties?.label.split(', ');
     return {
       id,
       labelNameArray,

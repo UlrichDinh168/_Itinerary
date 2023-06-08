@@ -1,10 +1,10 @@
-import { notificationTypes as types } from "./types";
-import { NOTIFICATION_DURATION } from "../constants";
+import { notificationTypes as types } from './types';
+import { NOTIFICATION_DURATION } from '../constants';
 
 const showNotification = (message, type) => {
   let defaultMessage = {
     type,
-    message: "Something went wrong",
+    message: 'Something went wrong',
     duration: NOTIFICATION_DURATION,
   };
   return {
