@@ -2,15 +2,22 @@
 
 # Description
 
-A simple website that allows users to search for itineraries and public transport, stops, places in Uusimaa area of Finland.
+A simple website that allows users to search for itineraries and public transport, stops, places in Uusimaa area of Finland. Also displaying the routes to the map.
 
-# Project overview
+**Demo:** https://itinerary-ulrich.herokuapp.com/
 
-- Frontend: React, Redux
+![](./src/client/public/image-2.png)
+
+# Tech stacks
+
+- Frontend: React, Redux, Mapbox
 - Backend: Node.js (Express)
+- Hosting: Heroku
 
 # Scripts
 
-- `npm install` or `yarn` to install the required dependencies.
-- `npm start` or `yarn start` to start the development server on http://localhost:8000 and serve the client build file.
-- `npm run dev` to run the development server and client silmultaneously.
+- `npm install` to install the required dependencies.
+- `npm run build` to build files. Build folder stored in `dist`
+- `npm run start` to run the production build.
+- `npm run dev` to run the development server and client silmultaneously or
+- Or, run `npm run client:dev` and `npm run server:dev` in different terminals.

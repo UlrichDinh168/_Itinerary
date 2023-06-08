@@ -14,7 +14,6 @@
     "server:build": "babel --verbose --out-dir dist --only 'src/server.js,src/server/' src",
     "client:build": "vite build",
     "build": "npm run server:build && npm run client:build",
-    "serve": "vite preview",
     "prepare": "husky install",
     "lint": "prettier --write . && eslint . && stylelint \"**/*.css\""
   },
