@@ -8,7 +8,7 @@ const instance = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
-    'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
+    'digitransit-subscription-key': process.env.VITE_HSL_KEY,
   },
 });
 
@@ -75,7 +75,7 @@ exports.getItineraryPlan = async (req, res) => {
       url: `${API_URL}/routing/v1/routers/hsl/index/graphql`,
       headers: {
         'Content-Type': 'application/graphql',
-        'digitransit-subscription-key': process.env.REACT_APP_HSL_KEY,
+        'digitransit-subscription-key': process.env.VITE_HSL_KEY,
       },
       data: query,
     });

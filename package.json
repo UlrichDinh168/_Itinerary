@@ -1,6 +1,10 @@
 {
   "name": "vite-react-express-boilerplate",
   "version": "0.0.0",
+  "engines": {
+    "node": ">=16",
+    "npm": ">=8"
+  },
   "scripts": {
     "start": "node dist/server.js",
     "clean": "rimraf dist",

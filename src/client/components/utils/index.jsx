@@ -1,3 +1,4 @@
+import React from 'react';
 import { MODE } from '../constants';
 
 export const simplifyResJson = (json) => {
@@ -30,18 +31,17 @@ export const hasInvalidValue = (value) => {
 };
 
 export const renderBandColor = (mode) => {
-  let color;
   switch (mode) {
     case MODE.BUS:
-      return (color = '#007ac9');
+      return '#007ac9';
     case MODE.TRAM:
-      return (color = 'green');
+      return 'green';
     case MODE.RAIL:
-      return (color = '#8c4799');
+      return '#8c4799';
     case MODE.SUBWAY:
-      return (color = 'rgb(255 72 0');
+      return 'rgb(255 72 0)';
     default:
-      return (color = '#ddd');
+      return '#ddd';
   }
 };
 
