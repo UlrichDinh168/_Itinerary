@@ -11,7 +11,7 @@ A simple website that allows users to search for itineraries and public transpor
 # Tech stacks
 
 - Frontend: React, Redux, Mapbox
-- Backend: Node.js (Express)
+- Backend: Node.js (Express), GraphQL
 - Hosting: Heroku
 
 # Scripts
